@@ -1,0 +1,27 @@
+name: Build and publish docker image to GitHub
+
+on:
+  push:
+    tags:
+      - v*
+
+jobs:
+  release:
+    name: Build and upload Docker image
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+      - name: Bulid Docker image
+        run: docker build --tag grontsag:latest .
+      - name: Save Docker image
+        run: docker save grontsag:latest | gzip > grontsag-docker.tar.gz
+      - name: Release to GitHub
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          tag: ${{ github.ref_name }}
+        run: |
+          gh release create "$tag" \
+              --repo="$GITHUB_REPOSITORY" \
+              --title="${GITHUB_REPOSITORY#*/} ${tag#v}" \
+              --generate-notes
