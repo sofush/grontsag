@@ -12,7 +12,7 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
-      - name: Bulid Docker image
+      - name: Build Docker image
         run: docker build --tag grontsag:latest .
       - name: Save Docker image
         run: docker save grontsag:latest | gzip > grontsag-docker.tar.gz
