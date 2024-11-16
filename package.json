@@ -1,0 +1,11 @@
+{
+  "name": "grontsag",
+  "version": "1.0.0",
+  "description": "Webshop til køb af grøntsager",
+  "main": "src/app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "sofush",
+  "license": "ISC"
+}
