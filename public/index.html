@@ -26,35 +26,38 @@
         </div>
     </div>
     <div id="catalog" class="lg:flex gap-[16px] md:mt-[32px]">
-        <div id="cart" class="mb-[16px] mb-[20px] lg:mb-auto flex-initial border-2 rounded-[16px] top-0 bg-gray-bright text-center order-2 font-serif">
+        <div id="cart" class="mb-[16px] flex-grow lg:mb-auto flex-initial border-2 rounded-[16px] top-0 bg-gray-bright text-center order-2 font-serif">
             Din vogn
         </div>
         <div id="product-list">
-            <div class="overflow-hidden border-2 rounded-[16px] md:min-h-[218px] md:max-h-[218px] bg-gray-bright">
+            <div class="overflow-hidden border-2 rounded-[16px] md:min-h-[218px] md:max-h-[218px] bg-gray-bright mb-[10px]">
                 <div class="md:flex gap-[20px] md:max-h-[218px] md:min-h-[218px]">
                     <div class="clip-border bg-[#eeeeee] min-h-[218px] min-w-[218px] lg:inline-block content-center text-center">
                         [Billede]
                     </div>
-                    <div class="flex flex-col flex-initial lg:max-w-[200px] lg:h-[100%] lg:inline-block content-center ml-[20px] my-auto">
-                        <div class="font-semibold text-[20px]">
-                            Almindelig tomat
+                    <div class="w-[100%] my-[16px] md:my-auto flex flex-row lg:min-w-[200px] lg:h-[100%] content-center ml-[20px]">
+                        <div class="flex flex-col">
+                            <div class="font-semibold text-[20px]">
+                                Almindelig tomat
+                            </div>
+                            <div class="font-semibold text-[24px] text-[#376B1F]">
+                                3 DKK pr. stk
+                            </div>
+                            <div class="text-[16px] text-grey-300 text-[#6D6D6D]">
+                                En almindelig tomat
+                            </div>
                         </div>
-                        <div class="font-semibold text-[24px] text-[#376B1F]">
-                            3 DKK pr. stk
-                        </div>
-                        <div class="text-[16px] text-grey-300 text-[#6D6D6D]">
-                            En almindelig tomat
-                        </div>
-                    </div>
-                    <div class="m-auto w-[193px]">
-                        <input type="text" class="mr-[37px] w-[156px] min-w-[156px] text-center border-2 border-grey-500 rounded-[5px] min-h-[46px]">
-                        <div class="mr-[37px] mt-[11px]">
-                            <div class="min-h-[46px] w-[156px] min-w-[156px] shadow-button flex text-center justify-center border-2 rounded-[5px] border-green-dark bg-green-bright">
-                                <div class="bg-red-500 content-center text-button-bg ml-[5px]">
-                                    SVG
-                                </div>
-                                <div class="content-center text-button-text text-[16px] text-green-dark">
-                                    Tilføj
+                        <div class="flex-grow"></div>
+                        <div class="my-auto lg:ml-[37px] max-w-[193px]">
+                            <input type="text" class="mr-[37px] max-w-[calc(193px-37px)] text-center border-2 border-grey-500 rounded-[5px] min-h-[46px]">
+                            <div class="mr-[37px] mt-[11px]">
+                                <div class="min-h-[46px] shadow-button flex text-center justify-center border-2 rounded-[5px] border-green-dark bg-green-bright">
+                                    <div class="bg-red-500 content-center text-button-bg ml-[5px]">
+                                        SVG
+                                    </div>
+                                    <div class="content-center text-button-text text-[16px] text-green-dark">
+                                        Tilføj
+                                    </div>
                                 </div>
                             </div>
                         </div>
