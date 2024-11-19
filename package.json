@@ -28,6 +28,7 @@
     "webpack-dev-server": "^5.1.0"
   },
   "dependencies": {
+    "@tailwindcss/container-queries": "^0.1.1",
     "browserify": "^17.0.1",
     "express": "^4.21.1",
     "render-jsx": "^0.2.4",

@@ -1,0 +1,14 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  @font-face {
+    font-family: Inter;
+    src: url(/dist/fonts/Inter.ttf) format('truetype');
+  }
+  @font-face {
+    font-family: Newsreader;
+    src: url(/dist/fonts/Newsreader.ttf) format('truetype');
+  }
+}
