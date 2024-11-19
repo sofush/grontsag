@@ -1,0 +1,22 @@
+@startuml domain model
+scale 1920*1080
+skinparam defaultFontName "Roboto"
+skinparam classAttributeIconSize 0
+class Produkt {
+    varenummer
+    navn
+    pris
+    beskrivelse
+    billede
+    antal på lager
+}
+class Vogn {
+    brugernavn
+    produkter
+}
+class Konto {
+    brugernavn
+    email
+    telefonnummer
+}
+@enduml
