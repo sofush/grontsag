@@ -1,5 +1,6 @@
 import HtmlWebpackPlugin from 'html-webpack-plugin';
 import { CleanWebpackPlugin } from 'clean-webpack-plugin';
+import CopyWebpackPlugin from 'copy-webpack-plugin';
 import process from 'process';
 import path from 'path';
 
@@ -43,5 +44,13 @@ export default {
       filename: 'about.html',
       chunks: ['about'],
     }),
+    new CopyWebpackPlugin({
+      patterns: [
+        {
+          from: './public/fonts/',
+          to: 'fonts/'
+        },
+      ]
+    })
   ],
 };

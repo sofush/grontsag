@@ -2,7 +2,12 @@
 export default {
   content: [ "./dist/**/*.{html,js}" ],
   theme: {
-    extend: {},
+    extend: {
+      fontFamily: {
+        'sans-serif': [ 'Inter', 'sans-serif'],
+        'serif': [ 'Newsreader', 'serif'],
+      }
+    },
   },
   plugins: [],
 }
