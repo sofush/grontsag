@@ -42,18 +42,12 @@
                     Din vogn
                 </div>
             </div>
-            <div class="flex justify-center mx-[5px] @[380px]:mx-[15px] @[500px]:mx-[40px] mb-[8px]">
-                <div class="min-w-[50px] w-[50px] shrink-0 grow-0 basis-initial font-inter-medium text-[16px] text-[#5A5A5A] text-right mt-[7px] mr-[8px] @[380px]:mr-[24px]">
-                    20x
-                </div>
-                <div class="flex-1 font-semibold text-[22px]">
-                    Almindelig tomat
-                    <div class="text-sm text-green-price font-inter-medium text-[11.5px]">
-                        2,75 DKK pr. stk
+            <div id="cart-items-container" class="flex flex-col">
+                <div id="cart-empty-notice" class="flex flex-col *:text-zinc-500 *:text-center">
+                    <i class="text-[24px]"></i>
+                    <div class="font-inter-medium">
+                        Din indkøbskurv er tom!
                     </div>
-                </div>
-                <div class="shrink-0 grow-0 basis-22 font-inter-medium text-[14px] text-green-price mt-[8px]">
-                    27,50 DKK
                 </div>
             </div>
             <div class="flex justify-center mx-[5px] @[240px]:mx-[25px] @[500px]:mx-[50px] mb-[8px] mt-[24px] lg:mt-[30px]">
@@ -63,9 +57,11 @@
                         Heraf moms
                     </div>
                 </div>
-                <div class="shrink-0 grow-0 basis-22 font-inter-medium text-[18px]">
-                    100,00 DKK
-                    <div class="text-[14px]">
+                <div class="shrink-0 grow-0 basis-22">
+                    <div id="cart-total" class="font-inter-medium text-[18px]">
+                        100,00 DKK
+                    </div>
+                    <div id="cart-vat" class="text-[14px]">
                         25,00 DKK
                     </div>
                 </div>
@@ -79,42 +75,7 @@
                 </div>
             </div>
         </div>
-        <div id="product-list">
-            <div class="mx-auto max-w-[710px] overflow-hidden border-2 rounded-[16px] md:min-h-[218px] md:max-h-[218px] bg-gray-bright mb-[10px]">
-                <div class="md:flex gap-[20px] md:max-h-[218px] md:min-h-[218px]">
-                    <div class="clip-border bg-[#eeeeee] min-h-[218px] min-w-[218px] lg:inline-block content-center text-center">
-                        [Billede]
-                    </div>
-                    <div class="w-[100%] my-[16px] md:my-auto flex flex-row lg:min-w-[200px] lg:h-[100%] content-center ml-[20px]">
-                        <div class="flex flex-col">
-                            <div class="font-semibold text-[20px]">
-                                Almindelig tomat
-                            </div>
-                            <div class="font-semibold text-[24px] text-green-price">
-                                3 DKK pr. stk
-                            </div>
-                            <div class="text-[16px] text-grey-300 text-[#6D6D6D]">
-                                En almindelig tomat
-                            </div>
-                        </div>
-                        <div class="flex-grow"></div>
-                        <div class="my-auto lg:ml-[37px] max-w-[193px]">
-                            <input type="text" class="focus:border-green-dark shadow focus:outline-none focus:ring-0 mr-[37px] max-w-[calc(193px-37px)] text-center border-2 border-grey-500 rounded-[5px] min-h-[46px]" placeholder="Antal">
-                            <div class="mr-[37px] mt-[11px]">
-                                <div class="group hover:drop-shadow-md hover:shadow-none active:bg-[#ced9ca] cursor-pointer select-none min-h-[46px] shadow-button flex text-center justify-center border-2 rounded-[5px] border-green-dark bg-green-bright">
-                                    <div class="content-center text-button-bg ml-[5px] mb-[3px] mr-[4px]">
-                                        <i class="text-green-dark text-[12px]">+</i>
-                                    </div>
-                                    <div class="group-hover:underline decoration-green-price decoration-2 content-center text-button-text text-[14px] text-green-dark font-inter-medium">
-                                        Tilføj
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
+        <div id="product-list"></div>
     </div>
 </body>
 </html>
