@@ -15,11 +15,15 @@
             </div>
         </div>
         <div class="flex-1"></div>
-        <div id="navbuttons" class="flex gap-x-[30px] flex-initial h-[48px] my-[10px] md:m-auto justify-center">
-            <div class="content-center text-center text-[16px]">Shop</div>
-            <div class="content-center text-center text-[16px]">Mine ordrer</div>
-            <div class="shadow-button flex text-center justify-center border-2 rounded-[5px] border-green-dark bg-green-bright w-[167px]">
-                <div class="content-center text-button-text text-[15px] text-green-dark font-inter-medium">
+        <div id="navbuttons" class="flex gap-x-[30px] flex-initial h-[48px] my-[10px] md:m-auto justify-center *:select-none *:cursor-pointer *:text-center">
+            <div class="content-center text-[16px] hover:underline decoration-2">
+                Shop
+            </div>
+            <div class="content-center text-[16px] hover:underline decoration-2">
+                Mine ordrer
+            </div>
+            <div class="group hover:drop-shadow-md hover:shadow-none active:bg-[#ced9ca] shadow-button flex justify-center border-2 rounded-[5px] border-green-dark bg-green-bright w-[167px]">
+                <div class="group-hover:underline decoration-2 decoration-green-price content-center text-button-text text-[15px] text-green-dark font-inter-medium">
                     Gå til betaling
                 </div>
                 <div class="content-center text-button-bg ml-[5px] mb-[1px] text-[16px]">
@@ -66,8 +70,8 @@
                     </div>
                 </div>
             </div>
-            <div class="flex shadow-button mx-auto mb-[22px] justify-center max-w-[170px] w-[170px] max-h-[43px] h-[43px] border-2 rounded-[5px] border-green-dark bg-green-bright">
-                <div class="content-center text-button-text text-[12px] text-green-dark font-bold text-[12px]">
+            <div class="group hover:drop-shadow-md hover:shadow-none active:bg-[#ced9ca] cursor-pointer select-none cursor-pointer select-none flex shadow-button mx-auto mb-[22px] justify-center max-w-[170px] w-[170px] max-h-[43px] h-[43px] border-2 rounded-[5px] border-green-dark bg-green-bright">
+                <div class="group-hover:underline decoration-2 decoration-green-price content-center text-button-text text-[12px] text-green-dark font-bold text-[12px]">
                     Gå til betaling
                 </div>
                 <div class="content-center text-button-bg ml-[7px] mt-[3px]">
@@ -97,11 +101,11 @@
                         <div class="my-auto lg:ml-[37px] max-w-[193px]">
                             <input type="text" class="focus:border-green-dark shadow focus:outline-none focus:ring-0 mr-[37px] max-w-[calc(193px-37px)] text-center border-2 border-grey-500 rounded-[5px] min-h-[46px]" placeholder="Antal">
                             <div class="mr-[37px] mt-[11px]">
-                                <div class="min-h-[46px] shadow-button flex text-center justify-center border-2 rounded-[5px] border-green-dark bg-green-bright">
+                                <div class="group hover:drop-shadow-md hover:shadow-none active:bg-[#ced9ca] cursor-pointer select-none min-h-[46px] shadow-button flex text-center justify-center border-2 rounded-[5px] border-green-dark bg-green-bright">
                                     <div class="content-center text-button-bg ml-[5px] mb-[3px] mr-[4px]">
                                         <i class="text-green-dark text-[12px]">+</i>
                                     </div>
-                                    <div class="content-center text-button-text text-[16px] text-green-dark font-inter-medium">
+                                    <div class="group-hover:underline decoration-green-price decoration-2 content-center text-button-text text-[14px] text-green-dark font-inter-medium">
                                         Tilføj
                                     </div>
                                 </div>
