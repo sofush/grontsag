@@ -7,8 +7,21 @@
     font-family: Inter;
     src: url(/dist/fonts/Inter.ttf) format('truetype');
   }
+
   @font-face {
     font-family: Newsreader;
     src: url(/dist/fonts/Newsreader.ttf) format('truetype');
   }
+
+  @font-face {
+    font-family: 'Font Awesome 6 Free';
+    src: url(/dist/fonts/fa-solid-900.woff2) format('woff2'),
+         url(/dist/fonts/fa-solid-900.ttf) format('truetype');
+  }
+}
+
+i {
+  font-family: 'Font Awesome 6 Free';
+  font-weight: normal;
+  font-style: normal;
 }

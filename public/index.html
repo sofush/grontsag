@@ -8,29 +8,75 @@
 </head>
 <body class="max-w-[1300px] px-[10px] md:px-[30px] lg:px-[50px] m-auto bg-[#fafffa]">
     <div id="navigation" class="md:h-[130px] md:flex">
-        <div id="branding" class="flex-initial text-center content-center text-[32px] font-serif font-medium text-[#376B1F] [text-shadow:_0_4px_4px_rgb(0_0_0_/_25%)]">
+        <div class="content-center">
+            <i class="text-[#2E6D35] text-[40px] mr-[14px] [text-shadow:_0_4px_4px_rgb(0_0_0_/_25%)]"></i>
+        </div>
+        <div id="branding" class="flex-initial text-center content-center text-[32px] font-serif font-medium text-green-price [text-shadow:_0_4px_4px_rgb(0_0_0_/_25%)]">
             Grøntsagsbutik
         </div>
         <div class="flex-1"></div>
-        <div id="navbuttons" class="flex gap-x-[30px] flex-initial h-[48px] m-auto">
+        <div id="navbuttons" class="flex gap-x-[30px] flex-initial h-[48px] my-[10px] md:m-auto justify-center">
             <div class="content-center text-center text-[16px]">Shop</div>
             <div class="content-center text-center text-[16px]">Mine ordrer</div>
-            <div class="shadow-button collapse md:visible flex text-center justify-center border-2 rounded-[5px] border-green-dark bg-green-bright w-[167px]">
-                <div class="content-center text-button-text text-[16px] text-green-dark">
+            <div class="shadow-button flex text-center justify-center border-2 rounded-[5px] border-green-dark bg-green-bright w-[167px]">
+                <div class="content-center text-button-text text-[15px] text-green-dark font-inter-medium">
                     Gå til betaling
                 </div>
-                <div class="content-center text-button-bg bg-red-500 ml-[5px]">
-                    SVG
+                <div class="content-center text-button-bg ml-[5px] mb-[1px] text-[16px]">
+                    <i class="text-[#556B4B]"></i>
                 </div>
             </div>
         </div>
     </div>
     <div id="catalog" class="lg:flex gap-[16px] md:mt-[32px]">
-        <div id="cart" class="mb-[16px] flex-grow lg:mb-auto flex-initial border-2 rounded-[16px] top-0 bg-gray-bright text-center order-2 font-serif">
-            Din vogn
+        <div id="cart" class="@container overflow-hidden max-w-[600px] lg:max-w-none mb-[16px] flex-grow lg:mb-auto flex-initial border-2 rounded-[16px] top-0 bg-gray-bright order-2">
+            <div class="flex justify-center mt-[16px] mb-[22px] lg:mb-[36px] [text-shadow:_0_4px_4px_rgb(0_0_0_/_25%)]">
+                <div class="content-center mr-[10px] mb-[4px]">
+                    <i class="text-[22px]"></i>
+                </div>
+                <div class="font-serif text-[28px] font-semibold decoration-green-price underline decoration-2">
+                    Din vogn
+                </div>
+            </div>
+            <div class="flex justify-center mx-[5px] @[380px]:mx-[15px] @[500px]:mx-[40px] mb-[8px]">
+                <div class="min-w-[50px] w-[50px] shrink-0 grow-0 basis-initial font-inter-medium text-[16px] text-[#5A5A5A] text-right mt-[7px] mr-[8px] @[380px]:mr-[24px]">
+                    20x
+                </div>
+                <div class="flex-1 font-semibold text-[22px]">
+                    Almindelig tomat
+                    <div class="text-sm text-green-price font-inter-medium text-[11.5px]">
+                        2,75 DKK pr. stk
+                    </div>
+                </div>
+                <div class="shrink-0 grow-0 basis-22 font-inter-medium text-[14px] text-green-price mt-[8px]">
+                    27,50 DKK
+                </div>
+            </div>
+            <div class="flex justify-center mx-[5px] @[380px]:mx-[15px] @[500px]:mx-[50px] mb-[8px] mt-[24px] lg:mt-[30px]">
+                <div class="flex-1 font-semibold text-[18px]">
+                    At betale
+                    <div class="text-[14px] font-normal">
+                        Heraf moms
+                    </div>
+                </div>
+                <div class="shrink-0 grow-0 basis-22 font-inter-medium text-[18px]">
+                    100,00 DKK
+                    <div class="text-[14px]">
+                        25,00 DKK
+                    </div>
+                </div>
+            </div>
+            <div class="flex shadow-button mx-auto mb-[22px] justify-center max-w-[170px] w-[170px] max-h-[43px] h-[43px] border-2 rounded-[5px] border-green-dark bg-green-bright">
+                <div class="content-center text-button-text text-[12px] text-green-dark font-bold text-[12px]">
+                    Gå til betaling
+                </div>
+                <div class="content-center text-button-bg ml-[7px] mt-[3px]">
+                    <i class="text-green-dark text-[16px]"></i>
+                </div>
+            </div>
         </div>
         <div id="product-list">
-            <div class="overflow-hidden border-2 rounded-[16px] md:min-h-[218px] md:max-h-[218px] bg-gray-bright mb-[10px]">
+            <div class="max-w-[710px] overflow-hidden border-2 rounded-[16px] md:min-h-[218px] md:max-h-[218px] bg-gray-bright mb-[10px]">
                 <div class="md:flex gap-[20px] md:max-h-[218px] md:min-h-[218px]">
                     <div class="clip-border bg-[#eeeeee] min-h-[218px] min-w-[218px] lg:inline-block content-center text-center">
                         [Billede]
@@ -40,7 +86,7 @@
                             <div class="font-semibold text-[20px]">
                                 Almindelig tomat
                             </div>
-                            <div class="font-semibold text-[24px] text-[#376B1F]">
+                            <div class="font-semibold text-[24px] text-green-price">
                                 3 DKK pr. stk
                             </div>
                             <div class="text-[16px] text-grey-300 text-[#6D6D6D]">
@@ -49,13 +95,13 @@
                         </div>
                         <div class="flex-grow"></div>
                         <div class="my-auto lg:ml-[37px] max-w-[193px]">
-                            <input type="text" class="mr-[37px] max-w-[calc(193px-37px)] text-center border-2 border-grey-500 rounded-[5px] min-h-[46px]">
+                            <input type="text" class="focus:border-green-dark shadow focus:outline-none focus:ring-0 mr-[37px] max-w-[calc(193px-37px)] text-center border-2 border-grey-500 rounded-[5px] min-h-[46px]" placeholder="Antal">
                             <div class="mr-[37px] mt-[11px]">
                                 <div class="min-h-[46px] shadow-button flex text-center justify-center border-2 rounded-[5px] border-green-dark bg-green-bright">
-                                    <div class="bg-red-500 content-center text-button-bg ml-[5px]">
-                                        SVG
+                                    <div class="content-center text-button-bg ml-[5px] mb-[3px] mr-[4px]">
+                                        <i class="text-green-dark text-[12px]">+</i>
                                     </div>
-                                    <div class="content-center text-button-text text-[16px] text-green-dark">
+                                    <div class="content-center text-button-text text-[16px] text-green-dark font-inter-medium">
                                         Tilføj
                                     </div>
                                 </div>

@@ -51,6 +51,14 @@ export default {
           to: 'fonts/'
         },
       ]
+    }),
+    new CopyWebpackPlugin({
+      patterns: [
+        {
+          from: './public/svg/',
+          to: 'svg/'
+        },
+      ]
     })
   ],
 };

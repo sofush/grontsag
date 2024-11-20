@@ -8,6 +8,7 @@ export default {
       colors: {
         'green-dark': '#164A1C',
         'green-bright': '#DBE7D7',
+        'green-price': '#376B1F',
         'gray-bright': '#FAFAF5',
         'gray-stroke': '#E6E6E6',
       },
@@ -18,6 +19,11 @@ export default {
       fontFamily: {
         'sans-serif': [ 'Inter', 'sans-serif'],
         'serif': [ 'Newsreader', 'serif'],
+        'awesome': [ 'Font Awesome 6 Free', 'serif' ],
+        'inter-medium': [ 'Inter', {
+            fontVariationSettings: '"wght" 500'
+          }
+        ]
       }
     },
   },
