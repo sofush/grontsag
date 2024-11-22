@@ -7,7 +7,7 @@ class Server {
   - app: express.Express
   - server: express.Server
   + constructor(port: number): Server
-  + startServer(): void
+  + start(): void
   + close(): void
   - setupRoutes(): void
 }

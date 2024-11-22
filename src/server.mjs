@@ -21,7 +21,7 @@ class Server {
         });
     }
 
-    startServer() {
+    start() {
         if (!!this.server)
             return;
 
@@ -32,7 +32,7 @@ class Server {
         });
     }
 
-    closeServer() {
+    close() {
         if (!this.server)
             return;
 

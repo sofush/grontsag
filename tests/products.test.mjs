@@ -53,13 +53,13 @@ beforeAll(async () => {
   }
 
   app = new Server(3000);
-  app.startServer();
+  app.start();
 });
 
 afterAll(async () => {
   await mongoose.connection.close();
   await db.stop();
-  await app.closeServer();
+  await app.close();
 });
 
 describe('GET /products', done => {
