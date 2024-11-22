@@ -52,13 +52,5 @@ export default {
         },
       ]
     }),
-    new CopyWebpackPlugin({
-      patterns: [
-        {
-          from: './public/svg/',
-          to: 'svg/'
-        },
-      ]
-    })
   ],
 };

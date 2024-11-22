@@ -24,11 +24,7 @@ test('read one product from /products?idx=0&limit=1', async () => {
   expect(header.status).toBe(200);
 
   const body = await header.json();
-  const actual = body.map(product => {
-    const { _id, ...rest } = product;
-    return rest;
-  });
-  expect(actual).toEqual([ expected[0] ]);
+  expect(body).toEqual([ expected[0] ]);
 });
 
 test('read one product from /products?idx=1', async () => {
@@ -36,11 +32,7 @@ test('read one product from /products?idx=1', async () => {
   expect(header.status).toBe(200);
 
   const body = await header.json();
-  const actual = body.map(product => {
-    const { _id, ...rest } = product;
-    return rest;
-  });
-  expect(actual).toEqual([ expected[1] ]);
+  expect(body).toEqual([ expected[1] ]);
 });
 
 test('read two products from /products?idx=0&limit=2', async () => {
@@ -48,12 +40,7 @@ test('read two products from /products?idx=0&limit=2', async () => {
   expect(header.status).toBe(200);
 
   const body = await header.json();
-  const actual = body.map(product => {
-    const { _id, ...rest } = product;
-    return rest;
-  });
-  
-  expect(actual).toEqual(expected);
+  expect(body).toEqual(expected);
 });
 
 test('fail to read product from /products?idx=-1&limit=-1', async () => {
@@ -66,10 +53,5 @@ test('read no products from /products?idx=999999999&limit=999999999', async () =
   expect(header.status).toBe(200);
 
   const body = await header.json();
-  const actual = body.map(product => {
-    const { _id, ...rest } = product;
-    return rest;
-  });
-  
-  expect(actual).toEqual([]);
+  expect(body).toEqual([]);
 });
