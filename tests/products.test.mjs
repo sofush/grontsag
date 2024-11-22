@@ -24,6 +24,22 @@ const products = [
         "price": 14.95,
         "unit": "pose",
         "image": "/dist/img/gulerodder_1kg.png"
+    },
+    {
+        "uuid": "372b0fa4-b367-494e-b87a-91f26497dc5c",
+        "name": "Rødløg",
+        "description": "Et rødløg",
+        "price": 1.35,
+        "unit": "stk",
+        "image": "/dist/img/rodlog.png"
+    },
+    {
+        "uuid": "b1f0f948-0fd9-4bf6-9c68-cdbcc42e9cf7",
+        "name": "Avocado",
+        "description": "En avocado",
+        "price": 8.95,
+        "unit": "stk",
+        "image": "/dist/img/avocado.png"
     }
 ];
 
@@ -69,12 +85,12 @@ describe('GET /products', done => {
 
   it('should be able to read two products with a limit', async () => {
     const res = await request(app.server)
-      .get('/products?idx=0&limit=2')
+      .get('/products?idx=1&limit=2')
       .set('Accept', 'application/json')
       .expect('Content-Type', 'application/json; charset=utf-8')
       .expect(200);
 
-    expect(res.body).toEqual(products);
+    expect(res.body).toEqual([ products[1], products[2] ]);
   });
 
   it('should fail to read a product with invalid index', async () => {
