@@ -9,23 +9,11 @@ class Server {
         this.server = null;
     }
 
-    createRoutes() {
-        this.app.use(morgan('combined'));
-
-        this.app.use('/dist', express.static('dist'));
-
-        this.app.use(productRoute);
-
-        this.app.use('/', (_req, res) => {
-            res.sendFile('index.html', { root: 'dist' });
-        });
-    }
-
     start() {
         if (!!this.server)
             return;
 
-        this.createRoutes();
+        this.setupRoutes();
 
         this.server = this.app.listen(this.port, () => {
             console.log(`Listening on http://localhost:${this.port}`);
@@ -37,6 +25,20 @@ class Server {
             return;
 
         this.server.close();
+    }
+
+    setupRoutes() {
+        this.app.use(morgan('combined'));
+
+        this.app.use('/dist', express.static('dist'));
+
+        this.app.use(productRoute);
+        // Array.of(productRoute, cartRoute)
+        //     .forEach(this.app.use);
+
+        this.app.use('/', (_req, res) => {
+            res.sendFile('index.html', { root: 'dist' });
+        });
     }
 }
 
