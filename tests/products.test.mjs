@@ -1,9 +1,9 @@
 import { expect, describe, it, afterAll, beforeAll } from '@jest/globals';
-import request from 'supertest';
-import Server from '../src/server.mjs';
-import mongoose from 'mongoose';
-import Product from '../src/models/product.mjs';
 import { MongoMemoryServer } from 'mongodb-memory-server';
+import request from 'supertest';
+import mongoose from 'mongoose';
+import Server from '../src/server.mjs';
+import Product from '../src/models/product.mjs';
 
 let app;
 let db;
