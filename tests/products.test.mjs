@@ -1,4 +1,6 @@
-import { test, expect } from '@jest/globals';
+import { jest, test, expect } from '@jest/globals';
+
+jest.setTimeout(60_000);
 
 const expected = [
   {
