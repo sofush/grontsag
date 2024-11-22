@@ -46,25 +46,6 @@ afterAll(async () => {
   await app.closeServer();
 });
 
-// const products = [
-//   {
-//     'uuid': 'c5cfedb2-cde8-4613-af26-80b30ca030d6',
-//     'name': 'Almindelig tomat',
-//     'description': 'En almindelig tomat',
-//     'price': 2.75,
-//     'unit': 'stk',
-//     'image': '/dist/img/almindelig_tomat.png',
-//   },
-//   {
-//     "uuid": "766b14b9-c419-42fe-8a5f-d324f607ad96",
-//     "name": "Gulerødder (1 kg)",
-//     "description": "Et kilo gulerødder",
-//     "price": 14.95,
-//     "unit": "pose",
-//     "image": "/dist/img/gulerodder_1kg.png",
-//   },
-// ];
-
 describe('GET /products', done => {
   it('should be able to get all products', async () => {
     const res = await request(app.server)
