@@ -6,14 +6,14 @@ const router = express.Router();
 const productController = new ProductController();
 const requestValidator = Joi.object({
 	idx: Joi
-		.number()
-		.integer()
-		.min(0),
+    .number()
+    .integer()
+    .min(0),
 
 	limit: Joi
-		.number()
-		.integer()
-        .min(1),
+    .number()
+    .integer()
+    .min(1),
 });
 
 router.use(express.json());
