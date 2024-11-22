@@ -46,5 +46,13 @@ export default {
         },
       ]
     }),
+    new CopyWebpackPlugin({
+      patterns: [
+        {
+          from: './public/img/',
+          to: 'img/'
+        },
+      ]
+    }),
   ],
 };
