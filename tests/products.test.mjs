@@ -59,7 +59,7 @@ beforeAll(async () => {
 afterAll(async () => {
   await mongoose.connection.close();
   await db.stop();
-  await app.close();
+  app.close();
 });
 
 describe('GET /products', done => {
