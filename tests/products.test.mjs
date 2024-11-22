@@ -1,6 +1,19 @@
-import { jest, test, expect } from '@jest/globals';
+import { expect, describe, it, afterAll, beforeAll } from '@jest/globals';
+import request from 'supertest';
+import Server from '../src/server.mjs';
+import mongoose from 'mongoose';
 
-jest.setTimeout(60_000);
+let app;
+
+beforeAll(async () => {
+  app = new Server(3000);
+  app.startServer();
+});
+
+afterAll(async () => {
+  mongoose.connection.close();
+  await app.closeServer();
+});
 
 const expected = [
   {
@@ -21,39 +34,60 @@ const expected = [
   },
 ];
 
-test('read one product from /products?idx=0&limit=1', async () => {
-  const header = await fetch('http://localhost:3000/products?idx=0&limit=1');
-  expect(header.status).toBe(200);
+describe('GET /products', done => {
+  it('should be able to get all products', async () => {
+    const res = await request(app.server)
+      .get('/products')
+      .set('Accept', 'application/json')
+      .expect('Content-Type', 'application/json; charset=utf-8')
+      .expect(200);
 
-  const body = await header.json();
-  expect(body).toEqual([ expected[0] ]);
-});
+    expect(res.body).toEqual(expected);
+  });
 
-test('read one product from /products?idx=1', async () => {
-  const header = await fetch('http://localhost:3000/products?idx=1');
-  expect(header.status).toBe(200);
+  it('should be able to get a single products', async () => {
+    const res = await request(app.server)
+      .get('/products?idx=1&limit=1')
+      .set('Accept', 'application/json')
+      .expect('Content-Type', 'application/json; charset=utf-8')
+      .expect(200);
 
-  const body = await header.json();
-  expect(body).toEqual([ expected[1] ]);
-});
+    expect(res.body).toEqual([ expected[1] ]);
+  });
 
-test('read two products from /products?idx=0&limit=2', async () => {
-  const header = await fetch('http://localhost:3000/products?idx=0&limit=2');
-  expect(header.status).toBe(200);
+  it('should be able to read two products with a limit', async () => {
+    const res = await request(app.server)
+      .get('/products?idx=0&limit=2')
+      .set('Accept', 'application/json')
+      .expect('Content-Type', 'application/json; charset=utf-8')
+      .expect(200);
 
-  const body = await header.json();
-  expect(body).toEqual(expected);
-});
+    expect(res.body).toEqual(expected);
+  });
 
-test('fail to read product from /products?idx=-1&limit=-1', async () => {
-  const header = await fetch('http://localhost:3000/products?idx=-1&limit=-1');
-  expect(header.ok).toBe(false);
-});
+  it('should fail to read a product with invalid index', async () => {
+    return request(app.server)
+      .get('/products?idx=-1&limit=1')
+      .set('Accept', 'application/json')
+      .expect('Content-Type', 'application/json; charset=utf-8')
+      .expect(400);
+  });
 
-test('read no products from /products?idx=999999999&limit=999999999', async () => {
-  const header = await fetch('http://localhost:3000/products?idx=999999999&limit=999999999');
-  expect(header.status).toBe(200);
+  it('should fail to read a product with invalid limit', async () => {
+    return request(app.server)
+      .get('/products?idx=1&limit=-1')
+      .set('Accept', 'application/json')
+      .expect('Content-Type', 'application/json; charset=utf-8')
+      .expect(400);
+  });
 
-  const body = await header.json();
-  expect(body).toEqual([]);
+  it('should read no products at out-of-bounds index', async () => {
+    const res = await request(app.server)
+      .get('/products?idx=99999999&limit=1')
+      .set('Accept', 'application/json')
+      .expect('Content-Type', 'application/json; charset=utf-8')
+      .expect(200);
+
+    expect(res.body).toEqual([]);
+  });
 });
