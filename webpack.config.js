@@ -7,7 +7,6 @@ import path from 'path';
 export default {
   mode: 'none',
   entry: {
-    about: './public/about.jsx',
     index: './public/index.jsx',
   },
   output: {
@@ -38,11 +37,6 @@ export default {
       template: './public/index.html',
       filename: 'index.html',
       chunks: ['index'],
-    }),
-    new HtmlWebpackPlugin({
-      template: './public/about.html',
-      filename: 'about.html',
-      chunks: ['about'],
     }),
     new CopyWebpackPlugin({
       patterns: [
