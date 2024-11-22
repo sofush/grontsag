@@ -118,4 +118,11 @@ describe('GET /products', done => {
 
     expect(res.body).toEqual([]);
   });
+
+  it('should return HTML on front page', () => {
+    return request(app.server)
+      .get('/')
+      .expect('Content-Type', 'text/html; charset=UTF-8')
+      .expect(200);
+  });
 });
