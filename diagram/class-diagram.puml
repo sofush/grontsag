@@ -58,18 +58,43 @@ class CartedProduct {
   + amount: number
 }
 
+' Classes - User
+class UserRoute {
+  - userController: userController
+  + constructor(): UserRoute
+  + setupMiddleware(): Router
+}
+class UserController {
+  + createUser(): string
+  + readUser(userId: string): User
+  + updateUser(user: User): User
+  + authenticateUser(username: string, password: string): string
+}
+class User {
+  + constructor(document)
+  + id: string
+  + email: string
+  + password: string
+  + findOne(conditions, projcetion, options): User
+  + findOneAndUpdate(filter, query, options): User
+  + save(): Promise
+}
+
 ' Relationships from Server to routes
 Server ..> ProductRoute
 Server ..> CartRoute
 Server ..> SiteRoute
+Server ..> UserRoute
 
 ' Relationships from routes to controllers
-ProductRoute "1" *-- "1" ProductController
-CartRoute "1" *-- "1" CartController
+ProductRoute "1\t" *-- "1" ProductController
+CartRoute "1 " *-- "1 " CartController
+UserRoute "1 " *-- "1  " UserController
 
 ' Relationships from controllers to models
 ProductController ..> Product
 CartController ..> Cart
+UserController ..> User
 
 ' Relationships between models
 Cart ..> CartedProduct
