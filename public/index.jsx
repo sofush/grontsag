@@ -22,7 +22,7 @@ const createProductElement = (product) => {
         <div class="mx-auto max-w-[710px] overflow-hidden border-2 rounded-[16px] md:min-h-[218px] md:max-h-[218px] bg-gray-bright mb-[10px]">
             <div class="md:flex gap-[20px] md:max-h-[218px] md:min-h-[218px]">
                 <div class="clip-border bg-[#eeeeee] min-h-[218px] min-w-[218px] lg:inline-block content-center text-center">
-                    <img src={ product.image } alt="Et billede af produktet" class="m-auto" height="200" width="200"/>
+                    <img src={ product.image } alt="Et billede af produktet" class="m-auto content-center" height="200" width="200"/>
                 </div>
                 <div class="w-[100%] my-[16px] md:my-auto flex flex-row lg:min-w-[200px] lg:h-[100%] content-center ml-[20px]">
                     <div class="flex flex-col justify-center">
