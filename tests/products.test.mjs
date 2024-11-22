@@ -1,4 +1,4 @@
-import { expect, describe, it, afterAll, beforeAll, jest } from '@jest/globals';
+import { expect, describe, it, afterAll, beforeAll } from '@jest/globals';
 import request from 'supertest';
 import Server from '../src/server.mjs';
 import mongoose from 'mongoose';
