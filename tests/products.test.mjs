@@ -62,7 +62,7 @@ afterAll(async () => {
   app.close();
 });
 
-describe('GET /products', done => {
+describe('GET /products', () => {
   it('should be able to get all products', async () => {
     const res = await request(app.server)
       .get('/products')
@@ -118,7 +118,9 @@ describe('GET /products', done => {
 
     expect(res.body).toEqual([]);
   });
+});
 
+describe('GET /', () => {
   it('should return HTML on front page', () => {
     return request(app.server)
       .get('/')
