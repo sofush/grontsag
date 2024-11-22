@@ -1,9 +1,12 @@
 import express from 'express';
 import productRoute from './routes/productRoute.mjs';
+import morgan from 'morgan';
 
 const port = 3000;
 const app = express();
 const distFolder = 'dist';
+
+app.use(morgan('combined'));
 
 app.use('/dist', express.static(distFolder));
 
