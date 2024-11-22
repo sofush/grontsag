@@ -1,0 +1,76 @@
+@startuml class diagram
+scale 1920*1080
+
+' Classes
+class Server {
+  - port: number
+  - app: express.Express
+  - server: express.Server
+  + constructor(port: number): Server
+  + startServer(): void
+  + close(): void
+  - setupRoutes(): void
+}
+class SiteRoute {
+  + setupMiddleware(): Router
+}
+
+' Classes - Product
+class ProductRoute {
+  - productController: ProductController
+  - requestValidator: Joi
+  + constructor(): ProductRoute
+  + setupMiddleware(): Router
+}
+class ProductController {
+  + readProducts(idx: number, limit: number): Product[]
+}
+class Product {
+  + uuid: string
+  + name: string
+  + description: string
+  + price: number
+  + unit: string
+  + image: string
+  + find(query): Product[]
+}
+
+' Classes - Cart
+class CartRoute {
+  - cartController: CartController
+  + constructor(): CartRoute
+  + setupMiddleware(): Router
+}
+class CartController {
+  + readCart(userId: string): Cart
+  + updateProduct(userId: string, productId: string, amount: number): Cart
+  + deleteCart(userId: string): void
+}
+class Cart {
+  + userId: string
+  + products: CartedProduct[]
+  + findOne(conditions, projection, options): Cart
+  + findOneAndUpdate(filter, query, options): Cart
+  + deleteMany(conditions, options): void
+}
+class CartedProduct {
+  + productId: string
+  + amount: number
+}
+
+' Relationships from Server to routes
+Server ..> ProductRoute
+Server ..> CartRoute
+Server ..> SiteRoute
+
+' Relationships from routes to controllers
+ProductRoute "1" *-- "1" ProductController
+CartRoute "1" *-- "1" CartController
+
+' Relationships from controllers to models
+ProductController ..> Product
+CartController ..> Cart
+
+' Relationships between models
+Cart ..> CartedProduct
+@enduml

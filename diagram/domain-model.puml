@@ -1,22 +1,30 @@
 @startuml domain model
 scale 1920*1080
-skinparam defaultFontName "Roboto"
-skinparam classAttributeIconSize 0
+
+' Conceptual classes
 class Produkt {
-    varenummer
-    navn
-    pris
-    beskrivelse
-    billede
-    antal på lager
+  id
+  navn
+  beskrivelse
+  pris
+  enhed
+  billede
 }
-class Vogn {
-    brugernavn
-    produkter
+class KurvProdukt {
+  bruger id
+  produkt id
+  antal
 }
-class Konto {
-    brugernavn
-    email
-    telefonnummer
+class Bruger {
+  id
+  brugernavn
+  kodeord
+  email
+  telefonnummer
 }
+
+' Relationships
+KurvProdukt "0..m" -r- "1" Produkt: \t\t
+Bruger "1" -- "0..m" KurvProdukt
+
 @enduml
