@@ -5,9 +5,9 @@
   "type": "module",
   "main": "src/app.js",
   "scripts": {
-    "start": "webpack serve --open",
+    "start": "node src/app.mjs",
     "test": "node --experimental-vm-modules node_modules/jest/bin/jest.js",
-    "build": "webpack",
+    "build": "webpack && npx tailwindcss -i ./public/input.css -o ./dist/style.css",
     "watch": "nodemon --exec \"npm run build && node src/app.mjs\" -e js --ignore dist/"
   },
   "author": "sofush",

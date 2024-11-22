@@ -21,5 +21,20 @@ jobs:
         cache: 'npm'
     - run: npm ci
     - run: npm run build --if-present
-    - run: npm test
+
+    - name: Start Express server
+      run: nohup npm run start &
+
+    - name: Wait for server to start
+      run: |
+        until curl -s http://localhost:3000 > /dev/null; do
+          echo "Waiting for server to start..."
+          sleep 2
+        done
+
+    - name: Run tests
+      run: npm test
+
+    - name: Stop server
+      run: kill $(lsof -t -i:3000)
 
