@@ -52,7 +52,7 @@ beforeAll(async () => {
         await product.save();
     }
 
-    app = new Server(3000);
+    app = new Server(0);
     app.start();
 });
 
