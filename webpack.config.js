@@ -8,6 +8,8 @@ export default {
   mode: 'none',
   entry: {
     index: './public/index.jsx',
+    register: './public/register.jsx',
+    login: './public/login.jsx',
   },
   output: {
     filename: '[name].bundle.js',
@@ -36,7 +38,17 @@ export default {
     new HtmlWebpackPlugin({
       template: './public/index.html',
       filename: 'index.html',
-      chunks: ['index'],
+      chunks: [ 'index' ],
+    }),
+    new HtmlWebpackPlugin({
+      template: './public/login.html',
+      filename: 'login.html',
+      chunks: [ 'login' ],
+    }),
+    new HtmlWebpackPlugin({
+      template: './public/register.html',
+      filename: 'register.html',
+      chunks: [ 'register' ],
     }),
     new CopyWebpackPlugin({
       patterns: [
