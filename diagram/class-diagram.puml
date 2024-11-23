@@ -71,7 +71,6 @@ class UserController {
   + authenticateUser(username: string, password: string): string
 }
 class User {
-  + constructor(document)
   + id: string
   + email: string
   + password: string

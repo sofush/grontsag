@@ -17,10 +17,8 @@ class KurvProdukt {
 }
 class Bruger {
   id
-  brugernavn
-  kodeord
   email
-  telefonnummer
+  kodeord
 }
 
 ' Relationships
