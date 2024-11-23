@@ -106,7 +106,7 @@ class UserRoute {
                 return;
             }
 
-            const token = jwt.sign(user.toJSON(), secret);
+            const token = jwt.sign(JSON.stringify(user), secret);
             res.status(200).json({ jwt: token });
         });
 
