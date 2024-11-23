@@ -2,8 +2,8 @@ import express from 'express';
 import jwt from 'jsonwebtoken';
 import Joi from 'joi';
 import UserController from '../controllers/userController.mjs';
+import { verifyJwt, handleInvalidCredentials, secret } from '../util/auth.mjs';
 
-const secret = 'open-secret-123';
 const userValidator = Joi.object({
     email: Joi
         .string()
@@ -13,33 +13,6 @@ const userValidator = Joi.object({
         .string()
         .min(1),
 });
-
-const handleInvalidCredentials = (req, res) => {
-    if (req.accepts('json')) {
-        res
-            .status(403)
-            .json({
-                error: 'Invalid or missing credentials'
-            });
-        return;
-    }
-
-    res.redirect('/login');
-};
-
-const verifyJwt = (authorization) => {
-    if (!authorization)
-        return null;
-
-    try {
-        console.log(`Verifying authorization: ${authorization}`);
-        return jwt.verify(authorization, secret);
-    } catch (err) {
-        console.log(err);
-    }
-
-    return null;
-};
 
 class UserRoute {
     constructor() {
