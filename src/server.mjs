@@ -2,6 +2,7 @@ import express from 'express';
 import productRoute from './routes/productRoute.mjs';
 import UserRoute from './routes/userRoute.mjs';
 import morgan from 'morgan';
+import CartRoute from './routes/cartRoute.mjs';
 
 class Server {
     constructor(port) {
@@ -33,8 +34,11 @@ class Server {
 
         this.app.use('/dist', express.static('dist'));
 
-        Array.of(productRoute, new UserRoute().setupMiddleware())
-            .forEach(route => this.app.use(route));
+        [
+            productRoute,
+            new UserRoute().setupMiddleware(),
+            new CartRoute().setupMiddleware(),
+        ].forEach(route => this.app.use(route));
 
         this.app.use('/', (_req, res) => {
             res.sendFile('index.html', { root: 'dist' });
