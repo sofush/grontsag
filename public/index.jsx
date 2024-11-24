@@ -142,13 +142,6 @@ const createCartedProductElement = (product) => {
     );
 };
 
-const addCartedItem = async (amount, product) => {
-    const el = createCartedProductElement(amount, product);
-    const cartEmptyNotice = document.getElementById('cart-empty-notice');
-
-    cartEmptyNotice.style.display = 'none';
-};
-
 const updateCart = async () => {
     const cartedItemsListEl = document.getElementById('cart-items-container');
     const noticeEl = document.getElementById('cart-empty-notice');
