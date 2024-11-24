@@ -62,10 +62,10 @@ afterAll(async () => {
     app.close();
 });
 
-describe('GET /products', () => {
+describe('GET /api/products', () => {
     it('should be able to get all products', async () => {
         const res = await request(app.server)
-            .get('/products')
+            .get('/api/products')
             .set('Accept', 'application/json')
             .expect('Content-Type', 'application/json; charset=utf-8')
             .expect(200);
@@ -75,7 +75,7 @@ describe('GET /products', () => {
 
     it('should be able to get a single products', async () => {
         const res = await request(app.server)
-            .get('/products?idx=1&limit=1')
+            .get('/api/products?idx=1&limit=1')
             .set('Accept', 'application/json')
             .expect('Content-Type', 'application/json; charset=utf-8')
             .expect(200);
@@ -85,7 +85,7 @@ describe('GET /products', () => {
 
     it('should be able to read two products with a limit', async () => {
         const res = await request(app.server)
-            .get('/products?idx=1&limit=2')
+            .get('/api/products?idx=1&limit=2')
             .set('Accept', 'application/json')
             .expect('Content-Type', 'application/json; charset=utf-8')
             .expect(200);
@@ -95,7 +95,7 @@ describe('GET /products', () => {
 
     it('should fail to read a product with invalid index', async () => {
         return request(app.server)
-            .get('/products?idx=-1&limit=1')
+            .get('/api/products?idx=-1&limit=1')
             .set('Accept', 'application/json')
             .expect('Content-Type', 'application/json; charset=utf-8')
             .expect(400);
@@ -103,7 +103,7 @@ describe('GET /products', () => {
 
     it('should fail to read a product with invalid limit', async () => {
         return request(app.server)
-            .get('/products?idx=1&limit=-1')
+            .get('/api/products?idx=1&limit=-1')
             .set('Accept', 'application/json')
             .expect('Content-Type', 'application/json; charset=utf-8')
             .expect(400);
@@ -111,7 +111,7 @@ describe('GET /products', () => {
 
     it('should read no products at out-of-bounds index', async () => {
         const res = await request(app.server)
-            .get('/products?idx=99999999&limit=1')
+            .get('/api/products?idx=99999999&limit=1')
             .set('Accept', 'application/json')
             .expect('Content-Type', 'application/json; charset=utf-8')
             .expect(200);

@@ -2,7 +2,7 @@
 import h from 'vhtml';
 
 const productsPromise = (async () => {
-    const header = await fetch('/products');
+    const header = await fetch('/api/products');
 
     if (!header.ok)
         return null;

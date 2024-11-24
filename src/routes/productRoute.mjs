@@ -35,7 +35,7 @@ class ProductRoute {
 
         router.use(express.json());
 
-        router.get('/products', validateQuery, async (req, res) => {
+        router.get('/api/products', validateQuery, async (req, res) => {
             const { idx, limit } = req.query;
 
             const products = await this.productController.readProducts(
