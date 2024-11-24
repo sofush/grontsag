@@ -98,21 +98,21 @@ describe('DELETE /api/cart', () => {
 
 describe('POST /api/cart/add', () => {
     it('should be able to add products to the cart', async () => {
-        let res = await addToCart(products[0].uuid, 5);
+        let res = await addToCart(products[0].id, 5);
         expect(res.body.userId).toEqual(userId);
-        expect(res.body.products[0].productId).toEqual(products[0].uuid);
+        expect(res.body.products[0].productId).toEqual(products[0].id);
         expect(res.body.products[0].amount).toEqual(5);
 
-        res = await addToCart(products[0].uuid, 5);
+        res = await addToCart(products[0].id, 5);
         expect(res.body.userId).toEqual(userId);
-        expect(res.body.products[0].productId).toEqual(products[0].uuid);
+        expect(res.body.products[0].productId).toEqual(products[0].id);
         expect(res.body.products[0].amount).toEqual(10);
 
-        res = await addToCart(products[1].uuid, 5);
+        res = await addToCart(products[1].id, 5);
         expect(res.body.userId).toEqual(userId);
-        expect(res.body.products[0].productId).toEqual(products[0].uuid);
+        expect(res.body.products[0].productId).toEqual(products[0].id);
         expect(res.body.products[0].amount).toEqual(10);
-        expect(res.body.products[1].productId).toEqual(products[1].uuid);
+        expect(res.body.products[1].productId).toEqual(products[1].id);
         expect(res.body.products[1].amount).toEqual(5);
     });
 });
