@@ -26,7 +26,7 @@ class ProductController {
   + readProducts(idx: number, limit: number): Product[]
 }
 class Product {
-  + uuid: string
+  + id: string
   + name: string
   + description: string
   + price: number

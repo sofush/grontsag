@@ -10,7 +10,7 @@ let db;
 
 const products = [
     {
-        "uuid": "c5cfedb2-cde8-4613-af26-80b30ca030d6",
+        "id": "c5cfedb2-cde8-4613-af26-80b30ca030d6",
         "name": "Almindelig tomat",
         "description": "En almindelig tomat",
         "price": 2.75,
@@ -18,7 +18,7 @@ const products = [
         "image": "/dist/img/almindelig_tomat.png"
     },
     {
-        "uuid": "766b14b9-c419-42fe-8a5f-d324f607ad96",
+        "id": "766b14b9-c419-42fe-8a5f-d324f607ad96",
         "name": "Gulerødder (1 kg)",
         "description": "Et kilo gulerødder",
         "price": 14.95,
@@ -26,7 +26,7 @@ const products = [
         "image": "/dist/img/gulerodder_1kg.png"
     },
     {
-        "uuid": "372b0fa4-b367-494e-b87a-91f26497dc5c",
+        "id": "372b0fa4-b367-494e-b87a-91f26497dc5c",
         "name": "Rødløg",
         "description": "Et rødløg",
         "price": 1.35,
@@ -34,7 +34,7 @@ const products = [
         "image": "/dist/img/rodlog.png"
     },
     {
-        "uuid": "b1f0f948-0fd9-4bf6-9c68-cdbcc42e9cf7",
+        "id": "b1f0f948-0fd9-4bf6-9c68-cdbcc42e9cf7",
         "name": "Avocado",
         "description": "En avocado",
         "price": 8.95,
