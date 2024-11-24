@@ -2,8 +2,6 @@ import express from 'express';
 import Joi from 'joi';
 import ProductController from '../controllers/productController.mjs';
 
-const router = express.Router();
-const productController = new ProductController();
 const requestValidator = Joi.object({
     idx: Joi
         .number()
@@ -16,8 +14,6 @@ const requestValidator = Joi.object({
         .min(1),
 });
 
-router.use(express.json());
-
 const validateQuery = (req, res, next) => {
     const { error } = requestValidator.validate(req.query);
 
@@ -29,15 +25,29 @@ const validateQuery = (req, res, next) => {
     next();
 };
 
-router.get('/products', validateQuery, async (req, res) => {
-    const { idx, limit } = req.query;
+class ProductRoute {
+    constructor() {
+        this.productController = new ProductController();
+    }
 
-    const products = await productController.readProducts(
-        idx ?? 0,
-        limit ?? Number.MAX_SAFE_INTEGER,
-    );
+    setupMiddleware() {
+        const router = express.Router();
 
-    res.status(200).json(products);
-});
+        router.use(express.json());
 
-export default router;
+        router.get('/products', validateQuery, async (req, res) => {
+            const { idx, limit } = req.query;
+
+            const products = await this.productController.readProducts(
+                idx ?? 0,
+                limit ?? Number.MAX_SAFE_INTEGER,
+            );
+
+            res.status(200).json(products);
+        });
+        
+        return router;
+    }
+}
+
+export default ProductRoute;

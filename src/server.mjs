@@ -1,5 +1,5 @@
 import express from 'express';
-import productRoute from './routes/productRoute.mjs';
+import ProductRoute from './routes/productRoute.mjs';
 import UserRoute from './routes/userRoute.mjs';
 import morgan from 'morgan';
 import CartRoute from './routes/cartRoute.mjs';
@@ -35,7 +35,7 @@ class Server {
         this.app.use('/dist', express.static('dist'));
 
         [
-            productRoute,
+            new ProductRoute().setupMiddleware(),
             new UserRoute().setupMiddleware(),
             new CartRoute().setupMiddleware(),
         ].forEach(route => this.app.use(route));
