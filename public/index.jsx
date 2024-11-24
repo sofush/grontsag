@@ -1,14 +1,10 @@
 /** @jsx h */
 import h from 'vhtml';
+import Session from './session.mjs';
+import ProductCollection from './productCollection.mjs';
 
-const productsPromise = (async () => {
-    const header = await fetch('/api/products');
-
-    if (!header.ok)
-        return null;
-
-    return await header.json();
-})();
+const session = new Session();
+const productsCollection = new ProductCollection();
 
 const getPricePerUnit = (product) => {
     const price = Number(product.price).toFixed(2).replace('.', ',');
@@ -60,6 +56,31 @@ const createProductElement = (product) => {
     );
 }
 
+const addToCart = async (product, amount) => {
+    const bodyContent = JSON.stringify({
+        productId: product.id,
+        amount: amount,
+    });
+
+    const header = await fetch('/api/cart/add', {
+        method: 'POST',
+        headers: new Headers({
+            'Authorization': await session.get(),
+            'Accept': 'application/json',
+            'Content-Type': 'application/json'
+        }),
+        body: bodyContent
+    });
+
+    if (!header.ok) {
+        console.error('Could not add product to cart');
+        return;
+    }
+
+    const cart = await header.json();
+    await updateCart(cart);
+};
+
 const addProduct = (product) => {
     const productList = document.getElementById('product-list');
     const productHtml = createProductElement(product);
@@ -103,13 +124,7 @@ const addProduct = (product) => {
 
             if (isValid) {
                 const amount = Number(input.value);
-                
-                if (!Number(product.amount))
-                    product.amount = amount;
-                else
-                    product.amount += amount;
-
-                updateCart();
+                addToCart(product, amount);
             } else {
                 noticeEl.classList.remove('animate-shake');
                 noticeEl.offsetHeight;
@@ -119,15 +134,15 @@ const addProduct = (product) => {
     }
 };
 
-const createCartedProductElement = (product) => {
+const createCartedProductElement = (product, amount) => {
     const pricePerUnit = getPricePerUnit(product);
-    const total = Number(product.price * product.amount);
+    const total = Number(product.price * amount);
     const totalText = `${total.toFixed(2).replace('.', ',')} DKK`;
 
     return (
         <div class="carted-product flex justify-center mx-[5px] @[380px]:mx-[15px] @[500px]:mx-[40px] mb-[8px]">
             <div class="min-w-[50px] w-[50px] shrink-0 grow-0 basis-initial font-inter-medium text-[16px] text-[#5A5A5A] text-right mt-[7px] mr-[8px] @[380px]:mr-[24px]">
-                { product.amount }
+                { amount }
             </div>
             <div class="flex-1 font-semibold text-[22px]">
                 { product.name }
@@ -142,7 +157,7 @@ const createCartedProductElement = (product) => {
     );
 };
 
-const updateCart = async () => {
+const updateCart = async (cart) => {
     const cartedItemsListEl = document.getElementById('cart-items-container');
     const noticeEl = document.getElementById('cart-empty-notice');
     const totalEl = document.getElementById('cart-total');
@@ -151,30 +166,57 @@ const updateCart = async () => {
     Array.from(document.getElementsByClassName('carted-product'))
         .forEach(e => e.remove());
 
-    productsPromise.then(products => {
-        const cartedProducts = products
-            .filter(product => !!product.amount);
-        const elements = cartedProducts
-            .map(createCartedProductElement);
-            
-        elements.forEach(el => 
-            cartedItemsListEl.insertAdjacentHTML('beforeend', el));
-        noticeEl.style.display = elements.length === 0 ? '' : 'none';
-
-        const total = cartedProducts
-            .map(product => product.amount * product.price)
-            .reduce((a, b) => a + b, 0);
-        const vat = total * 0.25;
+    if (!cart) {
+        const header = await fetch('/api/cart', {
+            method: 'GET',
+            headers: new Headers({
+                'Authorization': await session.get(),
+            }),
+        });
         
-        totalEl.innerText = `${total.toFixed(2).replace('.', ',')} DKK`;
-        vatEl.innerText = `${vat.toFixed(2).replace('.', ',')} DKK`;
-    });
+        if (!header.ok) {
+            noticeEl.style.display = '';
+            console.error('Could not reach GET /api/cart');
+            return;
+        }
+
+        cart = await header.json();
+    }
+
+    const { userId: _, products: cartedProducts } = cart;
+    const products = await productsCollection.get();
+
+    if (cartedProducts.length === 0) {
+        noticeEl.style.display = '';
+        return;
+    } else {
+        noticeEl.style.display = 'none';
+    }
+
+    let total = 0;
+
+    cartedProducts
+        .forEach(carted => {
+            const product = products.find(p => p.id == carted.productId);
+
+            if (!product)
+                return;
+
+            const el = createCartedProductElement(product, carted.amount);
+            cartedItemsListEl.insertAdjacentHTML('beforeend', el);
+            total += carted.amount * product.price;
+        });
+
+    totalEl.innerText = `${total.toFixed(2).replace('.', ',')} DKK`;
+    vatEl.innerText = `${(total * 0.25).toFixed(2).replace('.', ',')} DKK`;
 };
 
 document.addEventListener('DOMContentLoaded', async () => {
-    productsPromise.then((products) => {
-        for (const idx in products) {
-            addProduct(products[idx]);
-        }
-    });
+    const products = await productsCollection.get();
+
+    for (const idx in products) {
+        addProduct(products[idx]);
+    }
+
+    await updateCart();
 });
