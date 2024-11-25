@@ -80,7 +80,7 @@ describe('GET /api/user with valid token', () => {
             .expect(200);
 
         expect(uuidValidate(res.body.id)).toBeTruthy();
-        expect(res.body.email).toBe(null);
+        expect(res.body.email).toBe(undefined);
         expect(res.body.password).toBe(undefined);
     });
 
