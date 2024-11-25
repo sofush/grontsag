@@ -19,7 +19,7 @@ class Login {
         const popupLoginButtonEl = document.getElementById('popup-login-button');
         const popupRegisterButtonEl = document.getElementById('popup-register-button');
         const invalidNoticeEl = document.getElementById('invalid-credentials-notice');
-        const emailTakenNoticeEl = document.getElementById('invalid-credentials-notice');
+        const emailTakenNoticeEl = document.getElementById('email-taken-notice');
         const popupShowRegisterButtonEl = document.getElementById('popup-show-register-button');
         const popupBackButtonEl = document.getElementById('popup-back-button');
         const registerModalEl = document.getElementById('register-modal');
@@ -94,6 +94,7 @@ class Login {
     async #register() {
         const emailInputEl = document.getElementById('register-email');
         const passwordInputEl = document.getElementById('register-password');
+        const emailTakenNoticeEl = document.getElementById('');
         const email = emailInputEl.value;
         const password = passwordInputEl.value;
         const res = await this.session.updateUser(email, password);
@@ -104,6 +105,9 @@ class Login {
         if (res) {
             emailInputEl.value = '';
             passwordInputEl.value = '';
+        } else {
+            const emailTakenNoticeEl = document.getElementById('email-taken-notice');
+            emailTakenNoticeEl.classList.remove('hidden');
         }
 
         return !!res;

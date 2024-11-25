@@ -41,6 +41,7 @@ class UserRoute {
 
         router.get('/api/user/new', async (_req, res) => {
             const user = await this.userController.createUser();
+            console.error(`created user: ${user.toJSON()}`);
             const token = jwt.sign(user.toJSON(), secret);
             res.status(200).json({ jwt: token });
         });
@@ -59,9 +60,16 @@ class UserRoute {
             }
 
             userUpdate.id = authUser.id;
-            const updatedUser = await this.userController.updateUser(userUpdate);
-            const token = jwt.sign(JSON.stringify(updatedUser), secret);
-            res.status(200).json({ jwt: token, user: updatedUser });
+
+            try {
+                const updatedUser = await this.userController.updateUser(userUpdate);
+                const token = jwt.sign(JSON.stringify(updatedUser), secret);
+                res.status(200).json({ jwt: token, user: updatedUser });
+            } catch (e) {
+                console.error(e);
+                res.status(400).json({ error: 'Duplicate email' });
+                return;
+            }
         });
 
         router.post('/api/login', async (req, res) => {
