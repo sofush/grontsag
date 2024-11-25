@@ -64,7 +64,7 @@ class UserRoute {
             res.status(200).json({ jwt: token, user: updatedUser });
         });
 
-        router.get('/api/login', async (req, res) => {
+        router.post('/api/login', async (req, res) => {
             const { error, value: cred } = userValidator.validate(req.body);
 
             if (error) {

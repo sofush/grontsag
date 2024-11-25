@@ -104,21 +104,3 @@ describe('GET /api/user with valid token', () => {
         expect(jwtRet).toMatch(jwtRegex);
     });
 });
-
-describe('GET /login', () => {
-    it('should return HTML', () => {
-        return request(app.server)
-            .get('/login')
-            .expect('Content-Type', 'text/html; charset=UTF-8')
-            .expect(200);
-    });
-});
-
-describe('GET /register', () => {
-    it('should return HTML', () => {
-        return request(app.server)
-            .get('/register')
-            .expect('Content-Type', 'text/html; charset=UTF-8')
-            .expect(200);
-    });
-});

@@ -1,10 +1,9 @@
 /** @jsx h */
 import h from 'vhtml';
+import { jwtDecode } from 'jwt-decode';
+import Login from './login.mjs';
 import Session from './session.mjs';
 import ProductCollection from './productCollection.mjs';
-
-const session = new Session();
-const productsCollection = new ProductCollection();
 
 const getPricePerUnit = (product) => {
     const price = Number(product.price).toFixed(2).replace('.', ',');
@@ -211,6 +210,31 @@ const updateCart = async (cart) => {
     vatEl.innerText = `${(total * 0.25).toFixed(2).replace('.', ',')} DKK`;
 };
 
+const updateNavbar = async () => {
+    const jwtPayload = jwtDecode(await session.get());
+    console.log(`jwt payload: ${JSON.stringify(jwtPayload)}`);
+    const isRegistered = !!jwtPayload.email;
+    console.log(`is registered: ${isRegistered}`);
+
+    const navbarLoginEl = document.getElementById('navbar-login');
+    const navbarLogoutEl = document.getElementById('navbar-logout');
+
+    if (isRegistered) {
+        navbarLoginEl.classList.add('hidden');
+        navbarLogoutEl.classList.remove('hidden');
+    } else {
+        navbarLoginEl.classList.remove('hidden');
+        navbarLogoutEl.classList.add('hidden');
+    }
+};
+
+const session = new Session();
+const productsCollection = new ProductCollection();
+new Login(session, () => {
+    updateCart();
+    updateNavbar();
+});
+
 document.addEventListener('DOMContentLoaded', async () => {
     const products = await productsCollection.get();
 
@@ -218,5 +242,6 @@ document.addEventListener('DOMContentLoaded', async () => {
         addProduct(products[idx]);
     }
 
-    await updateCart();
+    updateCart();
+    updateNavbar();
 });

@@ -6,6 +6,7 @@ export default {
   theme: {
     extend: {
       colors: {
+        'background': '#f8fff8',
         'green-dark': '#164A1C',
         'green-bright': '#DBE7D7',
         'green-price': '#376B1F',

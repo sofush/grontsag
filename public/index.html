@@ -6,7 +6,7 @@
     <title>Katalog - Grøntsagsbutik</title>
     <link href="/dist/style.css" rel="stylesheet">
 </head>
-<body class="max-w-[1300px] px-[10px] md:px-[30px] lg:px-[50px] m-auto bg-[#f8fff8]">
+<body class="max-w-[1300px] px-[10px] md:px-[30px] lg:px-[50px] m-auto bg-background">
     <div id="navigation" class="md:h-[130px] md:flex">
         <div class="flex gap-[14px] justify-center select-none">
             <i class="content-center text-[#2E6D35] text-[40px] [text-shadow:_0_4px_4px_rgb(0_0_0_/_25%)]"></i>
@@ -16,10 +16,16 @@
         </div>
         <div class="flex-1"></div>
         <div id="navbuttons" class="flex gap-x-[30px] flex-initial h-[48px] my-[10px] md:m-auto justify-center *:select-none *:cursor-pointer *:text-center">
-            <div class="content-center text-[16px] hover:underline decoration-2">
+            <div id="navbar-logout" class="content-center text-[16px] hover:underline decoration-2 hidden">
+                Log ud
+            </div>
+            <div id="navbar-login" class="content-center text-[16px] hover:underline decoration-2 hidden">
+                Log ind
+            </div>
+            <div id="navbar-shop" class="content-center text-[16px] hover:underline decoration-2">
                 Shop
             </div>
-            <div class="content-center text-[16px] hover:underline decoration-2">
+            <div id="navbar-orders" class="content-center text-[16px] hover:underline decoration-2">
                 Mine ordrer
             </div>
             <div class="group hover:drop-shadow-md hover:shadow-none active:bg-[#ced9ca] shadow-button flex justify-center border-2 rounded-[5px] border-green-dark bg-green-bright w-[167px]">
@@ -76,6 +82,48 @@
             </div>
         </div>
         <div id="product-list"></div>
+    </div>
+    <div id="popup-container" class="hidden z-100 relative">
+        <div id="popup-background" class="inset-0 z-90 fixed bg-stone-300/70 cursor-pointer"></div>
+        <div class="inset-0 fixed overflow-y-auto z-100 pointer-events-none">
+            <div class="@container flex min-h-full justify-center text-center">
+                <div class="relative m-auto bg-gray-bright @[350px]:border-2 border-[#c1c1c1] @[375px]:rounded-[6px] py-[26px] @[300px]:px-[20px] w-full @[375px]:w-[360px] pointer-events-auto">
+                    <div id="popup-close" class="absolute right-[10px] top-[3px] flex gap-[5px] hover:bg-gray-300/25 rounded-2 px-[3px] cursor-pointer">
+                        <div class="flex text-button-bg">
+                            <i class="content-center justify-center text-neutral-500 text-[8px] select-none"></i>
+                        </div>
+                        <div class="content-center text-center text-neutral-500 font-inter-medium text-sm select-none">skjul</div>
+                    </div>
+                    <div class="font-serif font-bold text-xl underline decoration-green-price underline decoration-2 select-none">Log ind</div>
+                    <div class="text-left font-inter-medium text-sm ml-[1px] mt-[16px] select-none">E-mail</div>
+                    <input id="email" type="text" class="h-[35px] w-full mt-[3px] focus:border-green-dark focus:outline-none border-2 border-stone-300 rounded-[3px] px-[5px] py-[3px]" placeholder="E-mail"/>
+                    <div class="text-left font-inter-medium text-sm ml-[1px] mt-[16px] select-none">Kodeord</div>
+                    <input type="password" name="password" id="password" class="h-[35px] w-full mt-[3px] focus:border-green-dark focus:outline-none border-2 border-stone-300 rounded-[3px] px-[5px] py-[3px]" placeholder="Kodeord"/>
+                    <div id="invalid-credentials-notice" class="flex *:text-red-800 hidden">
+                        <i class="text-[12px] content-center mr-[4px] mt-[2px]"></i>
+                        <div class="text-sm text-inter-medium">Ugyldig email eller adgangskode</div>
+                    </div>
+                    <div class="flex gap-[8px] h-[38px] mt-[20px] select-none">
+                        <div id="popup-register-button" class="group flex-auto hover:drop-shadow-md active:bg-stone-200 cursor-pointer select-none cursor-pointer select-none flex justify-center border-2 rounded-[5px] border-stone-300 bg-stone-100">
+                            <div class="group-hover:underline decoration-2 decoration-stone-500 content-center text-neutral-600 text-[12px] font-bold text-[12px] py-[6px]">
+                                Registrer en konto
+                            </div>
+                            <div class="content-center ml-[7px]">
+                                <i class="text-neutral-600 text-[13px]"></i>
+                            </div>
+                        </div>
+                        <div id="popup-login-button" class="group flex-auto hover:drop-shadow-md active:bg-[#ced9ca] cursor-pointer select-none cursor-pointer select-none flex justify-center border-2 rounded-[5px] border-green-dark bg-green-bright">
+                            <div class="group-hover:underline decoration-2 decoration-green-price content-center text-button-text text-[12px] text-green-dark font-bold text-[12px] py-[6px]">
+                                Log ind
+                            </div>
+                            <div class="content-center text-button-bg ml-[7px]">
+                                <i class="text-green-dark text-[13px]"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 </body>
 </html>

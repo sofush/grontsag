@@ -9,6 +9,37 @@ class Session {
         return await this.jwt;
     }
 
+    async attemptLogin(email, password) {
+        const bodyContent = JSON.stringify({
+            email: email,
+            password: password,
+        });
+
+        const header = await fetch('/api/login', {
+            method: 'POST',
+            headers: new Headers({
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            }),
+            body: bodyContent
+        });
+
+        if (!header.ok) {
+            console.error('POST /api/login returned error');
+            return false;
+        }
+
+        const res = await header.json();
+        Cookies.set('jwt', res.jwt);
+        this.jwt = this.#fetchJwt();
+        return true;
+    }
+
+    async logout() {
+        Cookies.set('jwt', '');
+        this.jwt = this.#fetchJwt();
+    }
+
     async #fetchJwt() {
         const cookie = Cookies.get('jwt');
 
