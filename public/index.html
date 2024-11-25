@@ -85,28 +85,28 @@
     </div>
     <div id="popup-container" class="hidden z-100 relative">
         <div id="popup-background" class="inset-0 z-90 fixed bg-stone-300/70 cursor-pointer"></div>
-        <div class="inset-0 fixed overflow-y-auto z-100 pointer-events-none">
+        <div id="login-modal" class="inset-0 fixed overflow-y-auto z-100 pointer-events-none">
             <div class="@container flex min-h-full justify-center text-center">
                 <div class="relative m-auto bg-gray-bright @[350px]:border-2 border-[#c1c1c1] @[375px]:rounded-[6px] py-[26px] @[300px]:px-[20px] w-full @[375px]:w-[360px] pointer-events-auto">
-                    <div id="popup-close" class="absolute right-[10px] top-[3px] flex gap-[5px] hover:bg-gray-300/25 rounded-2 px-[3px] cursor-pointer">
+                    <div class="popup-close absolute right-[10px] top-[3px] flex gap-[5px] hover:bg-gray-300/25 rounded-2 px-[3px] cursor-pointer">
                         <div class="flex text-button-bg">
                             <i class="content-center justify-center text-neutral-500 text-[8px] select-none"></i>
                         </div>
-                        <div class="content-center text-center text-neutral-500 font-inter-medium text-sm select-none">skjul</div>
+                        <div class="content-center text-center text-neutral-500 font-inter-medium text-sm select-none">Skjul</div>
                     </div>
                     <div class="font-serif font-bold text-xl underline decoration-green-price underline decoration-2 select-none">Log ind</div>
                     <div class="text-left font-inter-medium text-sm ml-[1px] mt-[16px] select-none">E-mail</div>
-                    <input id="email" type="text" class="h-[35px] w-full mt-[3px] focus:border-green-dark focus:outline-none border-2 border-stone-300 rounded-[3px] px-[5px] py-[3px]" placeholder="E-mail"/>
+                    <input id="login-email" type="text" class="h-[35px] w-full mt-[3px] focus:border-green-dark focus:outline-none border-2 border-stone-300 rounded-[3px] px-[5px] py-[3px]" placeholder="E-mail"/>
                     <div class="text-left font-inter-medium text-sm ml-[1px] mt-[16px] select-none">Kodeord</div>
-                    <input type="password" name="password" id="password" class="h-[35px] w-full mt-[3px] focus:border-green-dark focus:outline-none border-2 border-stone-300 rounded-[3px] px-[5px] py-[3px]" placeholder="Kodeord"/>
+                    <input id="login-password" type="password" name="password" class="h-[35px] w-full mt-[3px] focus:border-green-dark focus:outline-none border-2 border-stone-300 rounded-[3px] px-[5px] py-[3px]" placeholder="Kodeord"/>
                     <div id="invalid-credentials-notice" class="flex *:text-red-800 hidden">
                         <i class="text-[12px] content-center mr-[4px] mt-[2px]"></i>
                         <div class="text-sm text-inter-medium">Ugyldig email eller adgangskode</div>
                     </div>
                     <div class="flex gap-[8px] h-[38px] mt-[20px] select-none">
-                        <div id="popup-register-button" class="group flex-auto hover:drop-shadow-md active:bg-stone-200 cursor-pointer select-none cursor-pointer select-none flex justify-center border-2 rounded-[5px] border-stone-300 bg-stone-100">
+                        <div id="popup-show-register-button" class="group flex-auto hover:drop-shadow-md active:bg-stone-200 cursor-pointer select-none cursor-pointer select-none flex justify-center border-2 rounded-[5px] border-stone-300 bg-stone-100">
                             <div class="group-hover:underline decoration-2 decoration-stone-500 content-center text-neutral-600 text-[12px] font-bold text-[12px] py-[6px]">
-                                Registrer en konto
+                                Opret en konto
                             </div>
                             <div class="content-center ml-[7px]">
                                 <i class="text-neutral-600 text-[13px]"></i>
@@ -118,6 +118,45 @@
                             </div>
                             <div class="content-center text-button-bg ml-[7px]">
                                 <i class="text-green-dark text-[13px]"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div id="register-modal" class="hidden inset-0 fixed overflow-y-auto z-100 pointer-events-none">
+            <div class="@container flex min-h-full justify-center text-center">
+                <div class="relative m-auto bg-gray-bright @[350px]:border-2 border-[#c1c1c1] @[375px]:rounded-[6px] py-[26px] @[300px]:px-[20px] w-full @[375px]:w-[360px] pointer-events-auto">
+                    <div class="popup-close absolute right-[10px] top-[3px] flex gap-[5px] hover:bg-gray-300/25 rounded-2 px-[3px] cursor-pointer">
+                        <div class="flex text-button-bg">
+                            <i class="content-center justify-center text-neutral-500 text-[8px] select-none"></i>
+                        </div>
+                        <div class="content-center text-center text-neutral-500 font-inter-medium text-sm select-none">Skjul</div>
+                    </div>
+                    <div class="font-serif font-bold text-xl underline decoration-green-price underline decoration-2 select-none">Opret en konto</div>
+                    <div class="text-left font-inter-medium text-sm ml-[1px] mt-[16px] select-none">E-mail</div>
+                    <input id="register-email" type="text" class="h-[35px] w-full mt-[3px] focus:border-green-dark focus:outline-none border-2 border-stone-300 rounded-[3px] px-[5px] py-[3px]" placeholder="E-mail"/>
+                    <div class="text-left font-inter-medium text-sm ml-[1px] mt-[16px] select-none">Kodeord</div>
+                    <input id="register-password" type="password" name="password" class="h-[35px] w-full mt-[3px] focus:border-green-dark focus:outline-none border-2 border-stone-300 rounded-[3px] px-[5px] py-[3px]" placeholder="Kodeord"/>
+                    <div id="email-taken-notice" class="flex *:text-red-800 hidden">
+                        <i class="text-[12px] content-center mr-[4px] mt-[2px]"></i>
+                        <div class="text-sm text-inter-medium">Email addressen er allerede i brug</div>
+                    </div>
+                    <div class="flex gap-[8px] h-[38px] mt-[20px] select-none">
+                        <div id="popup-back-button" class="group flex-auto hover:drop-shadow-md active:bg-stone-200 cursor-pointer select-none cursor-pointer select-none flex justify-center border-2 rounded-[5px] border-stone-300 bg-stone-100">
+                            <div class="content-center mr-[7px]">
+                                <i class="text-neutral-600 text-[13px]"></i>
+                            </div>
+                            <div class="group-hover:underline decoration-2 decoration-stone-500 content-center text-neutral-600 text-[12px] font-bold text-[12px] py-[6px]">
+                                Tilbage til login
+                            </div>
+                        </div>
+                        <div id="popup-register-button" class="group flex-auto hover:drop-shadow-md active:bg-[#ced9ca] cursor-pointer select-none cursor-pointer select-none flex justify-center border-2 rounded-[5px] border-green-dark bg-green-bright">
+                            <div class="group-hover:underline decoration-2 decoration-green-price content-center text-button-text text-[12px] text-green-dark font-bold text-[12px] py-[6px]">
+                                Fortsæt
+                            </div>
+                            <div class="content-center text-button-bg ml-[7px]">
+                                <i class="text-green-dark text-[13px]"></i>
                             </div>
                         </div>
                     </div>

@@ -11,48 +11,100 @@ class Login {
     }
 
     #addEventHandlers() {
-        const popupCloseEl = document.getElementById('popup-close');
+        const popupCloseEls = document.getElementsByClassName('popup-close');
         const popupContainerEl = document.getElementById('popup-container');
         const navbarLoginEl = document.getElementById('navbar-login');
         const navbarLogoutEl = document.getElementById('navbar-logout');
         const popupBackgroundEl = document.getElementById('popup-background');
         const popupLoginButtonEl = document.getElementById('popup-login-button');
-        const emailInputEl = document.getElementById('email');
-        const passwordInputEl = document.getElementById('password');
-        const noticeEl = document.getElementById('invalid-credentials-notice');
+        const popupRegisterButtonEl = document.getElementById('popup-register-button');
+        const invalidNoticeEl = document.getElementById('invalid-credentials-notice');
+        const emailTakenNoticeEl = document.getElementById('invalid-credentials-notice');
+        const popupShowRegisterButtonEl = document.getElementById('popup-show-register-button');
+        const popupBackButtonEl = document.getElementById('popup-back-button');
+        const registerModalEl = document.getElementById('register-modal');
+        const loginModalEl = document.getElementById('login-modal');
 
         const openPopup = () => {
+            hideRegisterModal();
             popupContainerEl.classList.remove('hidden');
         };
 
-        const closePopup = () => {
+        const closePopup = () =>
             popupContainerEl.classList.add('hidden');
+
+        const showRegisterModal = () => {
+            loginModalEl.classList.add('hidden');
+            registerModalEl.classList.remove('hidden');
         };
+
+        const hideRegisterModal = () => {
+            registerModalEl.classList.add('hidden');
+            loginModalEl.classList.remove('hidden');
+        };
+
+        const login = async () => {
+            if (await this.#login()) {
+                invalidNoticeEl.classList.add('hidden');
+                closePopup();
+            } else {
+                invalidNoticeEl.classList.remove('hidden');
+            }
+        };
+
+        const register = async () => {
+            if (await this.#register()) {
+                emailTakenNoticeEl.classList.add('hidden');
+                closePopup();
+            } else {
+                emailTakenNoticeEl.classList.remove('hidden');
+            }
+        };
+
+        Array.from(popupCloseEls)
+            .forEach(e => e.addEventListener('click', closePopup));
 
         navbarLoginEl.addEventListener('click', openPopup);
         navbarLogoutEl.addEventListener('click', () => this.#logout());
-        popupCloseEl.addEventListener('click', closePopup);
         popupBackgroundEl.addEventListener('click', closePopup);
-        popupLoginButtonEl.addEventListener('click', async () => {
-            const emailStr = emailInputEl.value;
-            const passwordStr = passwordInputEl.value;
-
-            if (await this.#login(emailStr, passwordStr)) {
-                emailInputEl.value = '';
-                passwordInputEl.value = '';
-                noticeEl.classList.add('hidden');
-                closePopup();
-            } else {
-                noticeEl.classList.remove('hidden');
-            }
-        });
+        popupLoginButtonEl.addEventListener('click', login);
+        popupRegisterButtonEl.addEventListener('click', register);
+        popupShowRegisterButtonEl.addEventListener('click', showRegisterModal);
+        popupBackButtonEl.addEventListener('click', hideRegisterModal);
     }
 
-    async #login(email, password) {
+    async #login() {
+        const emailInputEl = document.getElementById('login-email');
+        const passwordInputEl = document.getElementById('login-password');
+        const email = emailInputEl.value;
+        const password = passwordInputEl.value;
         const res = await this.session.attemptLogin(email, password);
 
         if (res && this.callback)
             this.callback();
+
+        if (res) {
+            emailInputEl.value = '';
+            passwordInputEl.value = '';
+        }
+
+        return !!res;
+    }
+
+    async #register() {
+        const emailInputEl = document.getElementById('register-email');
+        const passwordInputEl = document.getElementById('register-password');
+        const email = emailInputEl.value;
+        const password = passwordInputEl.value;
+        const res = await this.session.updateUser(email, password);
+
+        if (res && this.callback)
+            this.callback();
+
+        if (res) {
+            emailInputEl.value = '';
+            passwordInputEl.value = '';
+        }
 
         return !!res;
     }

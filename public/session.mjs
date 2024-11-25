@@ -35,6 +35,33 @@ class Session {
         return true;
     }
 
+    async updateUser(email, password) {
+        const bodyContent = JSON.stringify({
+            email: email,
+            password: password,
+        });
+
+        const header = await fetch('/api/user', {
+            method: 'PATCH',
+            headers: new Headers({
+                'Accept': 'application/json',
+                'Authorization': await this.jwt,
+                'Content-Type': 'application/json'
+            }),
+            body: bodyContent
+        });
+
+        if (!header.ok) {
+            console.error('PATCH /api/user returned error');
+            return false;
+        }
+
+        const res = await header.json();
+        Cookies.set('jwt', res.jwt);
+        this.jwt = this.#fetchJwt();
+        return true;
+    }
+
     async logout() {
         Cookies.set('jwt', '');
         this.jwt = this.#fetchJwt();
