@@ -51,14 +51,10 @@ class Login {
     async #login(email, password) {
         const res = await this.session.attemptLogin(email, password);
 
-        if (res) {
-            if (this.callback)
-                this.callback();
+        if (res && this.callback)
+            this.callback();
 
-            return true;
-        }
-
-        return false;
+        return !!res;
     }
 
     async #logout() {
