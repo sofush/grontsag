@@ -164,6 +164,7 @@ const updateCart = async (cart) => {
 
     Array.from(document.getElementsByClassName('carted-product'))
         .forEach(e => e.remove());
+    noticeEl.style.display = '';
 
     if (!cart) {
         const header = await fetch('/api/cart', {
@@ -185,26 +186,18 @@ const updateCart = async (cart) => {
     const { userId: _, products: cartedProducts } = cart;
     const products = await productsCollection.get();
 
-    if (cartedProducts.length === 0) {
-        noticeEl.style.display = '';
-        return;
-    } else {
-        noticeEl.style.display = 'none';
-    }
+    noticeEl.style.display = cartedProducts.length === 0 ? '' : 'none';
 
-    let total = 0;
+    let total = cartedProducts.reduce((acc, carted) => {
+        const product = products.find(p => p.id == carted.productId);
 
-    cartedProducts
-        .forEach(carted => {
-            const product = products.find(p => p.id == carted.productId);
+        if (!product)
+            return;
 
-            if (!product)
-                return;
-
-            const el = createCartedProductElement(product, carted.amount);
-            cartedItemsListEl.insertAdjacentHTML('beforeend', el);
-            total += carted.amount * product.price;
-        });
+        const el = createCartedProductElement(product, carted.amount);
+        cartedItemsListEl.insertAdjacentHTML('beforeend', el);
+        return acc + (carted.amount * product.price);
+    }, 0);
 
     totalEl.innerText = `${total.toFixed(2).replace('.', ',')} DKK`;
     vatEl.innerText = `${(total * 0.25).toFixed(2).replace('.', ',')} DKK`;
