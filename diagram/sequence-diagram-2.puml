@@ -1,0 +1,47 @@
+@startuml sequence diagram
+scale 1920*1080
+skinparam defaultFontName "Roboto"
+
+boundary Express
+participant UserRoute
+participant "JWT bibliotek"
+participant UserController
+participant User
+database MongoDB
+
+Express -> UserRoute: GET /api/user/new
+
+note left
+brugeren besøger
+hjemmesiden
+end note
+
+UserRoute -> UserController: createUser()
+UserController -> User: create()
+User -> MongoDB: Mongoose DB kald
+activate MongoDB
+Express <- MongoDB: JSON bruger objekt
+deactivate MongoDB
+activate Express
+Express -> UserRoute: PATCH /api/user
+
+note left
+brugeren opretter
+en konto
+end note
+
+deactivate Express
+UserRoute -> "JWT bibliotek": verify(token)
+UserRoute <- "JWT bibliotek": resultat
+UserRoute -> UserController: updateUser(id, email, password)
+UserController -> User: findOneAndUpdate(filter, update)
+User -> MongoDB: Mongoose DB kald
+activate MongoDB
+Express <- MongoDB: Opdateret JSON bruger objekt
+deactivate MongoDB
+
+note left
+brugeren er blevet
+oprettet
+end note
+@enduml
