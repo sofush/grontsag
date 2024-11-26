@@ -1,0 +1,10 @@
+@startuml class diagram
+scale 1920*1080
+actor Bruger
+Bruger -> System: Besøger hjemmeside
+Bruger <-- System: Viser forsiden
+Bruger -> System: Trykker på "log ind"
+Bruger <-- System: Viser log ind formular
+Bruger -> System: Sender email og kodeord
+Bruger <-- System: Sender JSON Web Token (JWT)
+@enduml
