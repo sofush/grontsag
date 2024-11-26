@@ -1,7 +1,6 @@
 @startuml sequence diagram
 scale 1920*1080
 skinparam defaultFontName "Roboto"
-skinparam classAttributeIconSize 0
 
 boundary Express
 participant ProductRoute
@@ -9,8 +8,8 @@ participant ProductController
 participant Product
 database MongoDB
 
-Express -> ProductRoute: HTTP request
-ProductRoute -> ProductController: readProducts(start, end)
+Express -> ProductRoute: GET /api/products
+ProductRoute -> ProductController: readProducts(index, limit)
 ProductController -> Product: find(query)
 Product -> MongoDB
 activate MongoDB
