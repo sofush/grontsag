@@ -32,6 +32,7 @@
   "dependencies": {
     "@tailwindcss/container-queries": "^0.1.1",
     "browserify": "^17.0.1",
+    "dotenv": "^16.4.5",
     "express": "^4.21.1",
     "joi": "^17.13.3",
     "jsonwebtoken": "^9.0.2",
@@ -39,6 +40,7 @@
     "mongoose": "^8.8.2",
     "morgan": "^1.10.0",
     "render-jsx": "^0.2.4",
+    "stripe": "^17.4.0",
     "uuid": "^11.0.3",
     "vhtml": "^2.2.0"
   }
