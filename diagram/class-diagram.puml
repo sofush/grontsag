@@ -11,9 +11,6 @@ class Server {
   + close(): void
   - setupRoutes(): void
 }
-class SiteRoute {
-  + setupMiddleware(): Router
-}
 
 ' Classes - Product
 class ProductRoute {
@@ -109,7 +106,6 @@ class OrderProduct {
 ' Relationships from Server to routes
 Server ..> ProductRoute
 Server ..> CartRoute
-Server ..> SiteRoute
 Server ..> UserRoute
 Server ..> OrderRoute
 
