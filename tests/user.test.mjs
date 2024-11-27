@@ -1,27 +1,12 @@
 import { expect, describe, it, afterAll, beforeAll, beforeEach } from '@jest/globals';
-import { MongoMemoryServer } from 'mongodb-memory-server';
 import request from 'supertest';
-import mongoose from 'mongoose';
 import { validate as uuidValidate } from 'uuid';
-import Server from '../src/server.mjs';
+import { beforeAll as beforeAllImpl, afterAll as afterAllImpl, app } from './common.mjs';
 
 const jwtRegex = /^(?:[\w-]+\.){2}[\w-]+$/;
-let app;
-let db;
 
-beforeAll(async () => {
-  db = await MongoMemoryServer.create();
-  await mongoose.connect(db.getUri());
-
-  app = new Server(0);
-  app.start();
-});
-
-afterAll(async () => {
-  await mongoose.connection.close();
-  await db.stop();
-  app.close();
-});
+beforeAll(beforeAllImpl);
+afterAll(afterAllImpl);
 
 describe('GET /api/user/new', () => {
     it('should return a new user when no jwt is present', async () => {

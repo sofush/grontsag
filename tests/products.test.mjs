@@ -1,66 +1,9 @@
 import { expect, describe, it, afterAll, beforeAll } from '@jest/globals';
-import { MongoMemoryServer } from 'mongodb-memory-server';
 import request from 'supertest';
-import mongoose from 'mongoose';
-import Server from '../src/server.mjs';
-import Product from '../src/models/product.mjs';
+import { beforeAll as beforeAllImpl, afterAll as afterAllImpl, app, products } from './common.mjs';
 
-let app;
-let db;
-
-const products = [
-    {
-        "id": "c5cfedb2-cde8-4613-af26-80b30ca030d6",
-        "name": "Almindelig tomat",
-        "description": "En almindelig tomat",
-        "price": 2.75,
-        "unit": "stk",
-        "image": "/dist/img/almindelig_tomat.png"
-    },
-    {
-        "id": "766b14b9-c419-42fe-8a5f-d324f607ad96",
-        "name": "Gulerødder (1 kg)",
-        "description": "Et kilo gulerødder",
-        "price": 14.95,
-        "unit": "pose",
-        "image": "/dist/img/gulerodder_1kg.png"
-    },
-    {
-        "id": "372b0fa4-b367-494e-b87a-91f26497dc5c",
-        "name": "Rødløg",
-        "description": "Et rødløg",
-        "price": 1.35,
-        "unit": "stk",
-        "image": "/dist/img/rodlog.png"
-    },
-    {
-        "id": "b1f0f948-0fd9-4bf6-9c68-cdbcc42e9cf7",
-        "name": "Avocado",
-        "description": "En avocado",
-        "price": 8.95,
-        "unit": "stk",
-        "image": "/dist/img/avocado.png"
-    }
-];
-
-beforeAll(async () => {
-    db = await MongoMemoryServer.create();
-    await mongoose.connect(db.getUri());
-
-    for (const idx in products) {
-        const product = new Product(products[idx]);
-        await product.save();
-    }
-
-    app = new Server(0);
-    app.start();
-});
-
-afterAll(async () => {
-    await mongoose.connection.close();
-    await db.stop();
-    app.close();
-});
+beforeAll(beforeAllImpl);
+afterAll(afterAllImpl);
 
 describe('GET /api/products', () => {
     it('should be able to get all products', async () => {
