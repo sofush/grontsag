@@ -21,7 +21,7 @@ class OrderRoute {
         this.productController = new ProductController();
     }
 
-    setupMiddleware() {
+    setupRouter() {
         const router = new express.Router();
 
         router.get('/api/order/new', async (req, res) => {

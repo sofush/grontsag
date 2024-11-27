@@ -37,10 +37,10 @@ class Server {
         this.app.use('/dist', express.static('dist'));
 
         [
-            new ProductRoute().setupMiddleware(),
-            new UserRoute().setupMiddleware(),
-            new CartRoute().setupMiddleware(),
-            new OrderRoute().setupMiddleware(),
+            new ProductRoute().setupRouter(),
+            new UserRoute().setupRouter(),
+            new CartRoute().setupRouter(),
+            new OrderRoute().setupRouter(),
         ].forEach(route => this.app.use(route));
 
         this.app.use('/', (_req, res) => {

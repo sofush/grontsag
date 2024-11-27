@@ -30,7 +30,7 @@ class ProductRoute {
         this.productController = new ProductController();
     }
 
-    setupMiddleware() {
+    setupRouter() {
         const router = express.Router();
 
         router.use(express.json());

@@ -19,7 +19,7 @@ class UserRoute {
         this.userController = new UserController();
     }
 
-    setupMiddleware() {
+    setupRouter() {
         const router = express.Router();
 
         router.use(express.json());

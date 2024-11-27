@@ -21,7 +21,7 @@ class CartRoute {
         this.cartController = new CartController();
     }
 
-    setupMiddleware() {
+    setupRouter() {
         const router = new express.Router();
 
         router.get('/api/cart', async (req, res) => {

@@ -20,7 +20,7 @@ class ProductRoute {
   - productController: ProductController
   - requestValidator: Joi
   + constructor(): ProductRoute
-  + setupMiddleware(): Router
+  + setupRouter(): Router
 }
 class ProductController {
   + readProducts(idx: number, limit: number): Product[]
@@ -39,7 +39,7 @@ class Product {
 class CartRoute {
   - cartController: CartController
   + constructor(): CartRoute
-  + setupMiddleware(): Router
+  + setupRouter(): Router
 }
 class CartController {
   + readCart(userId: string): Cart
@@ -62,7 +62,7 @@ class CartedProduct {
 class UserRoute {
   - userController: userController
   + constructor(): UserRoute
-  + setupMiddleware(): Router
+  + setupRouter(): Router
 }
 class UserController {
   + createUser(): string
@@ -85,7 +85,7 @@ class OrderRoute {
   - cartController: CartController
   - productController: ProductController
   + constructor(): OrderController
-  + setupMiddleware(): Router
+  + setupRouter(): Router
 }
 class OrderController {
   + createOrder(userId: string)
