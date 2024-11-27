@@ -4,7 +4,7 @@ export default class ProductController {
     async readProducts(idx, limit) {
         return await Product
             .find({}, '-_id -__v')
-            .skip(idx)
-            .limit(Math.max(limit, 1));
+            .skip(idx ?? 0)
+            .limit(Math.max(limit ?? Number.MAX_SAFE_INTEGER, 1));
     }
 }

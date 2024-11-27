@@ -2,8 +2,9 @@ import 'dotenv/config';
 import express from 'express';
 import ProductRoute from './routes/productRoute.mjs';
 import UserRoute from './routes/userRoute.mjs';
-import morgan from 'morgan';
 import CartRoute from './routes/cartRoute.mjs';
+import OrderRoute from './routes/orderRoute.mjs';
+import morgan from 'morgan';
 
 class Server {
     constructor(port) {
@@ -39,6 +40,7 @@ class Server {
             new ProductRoute().setupMiddleware(),
             new UserRoute().setupMiddleware(),
             new CartRoute().setupMiddleware(),
+            new OrderRoute().setupMiddleware(),
         ].forEach(route => this.app.use(route));
 
         this.app.use('/', (_req, res) => {

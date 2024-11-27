@@ -39,8 +39,8 @@ class ProductRoute {
             const { idx, limit } = req.query;
 
             const products = await this.productController.readProducts(
-                idx ?? 0,
-                limit ?? Number.MAX_SAFE_INTEGER,
+                idx,
+                limit,
             );
 
             res.status(200).json(products);

@@ -4,6 +4,7 @@ import { jwtDecode } from 'jwt-decode';
 import Login from './login.mjs';
 import Session from './session.mjs';
 import ProductCollection from './productCollection.mjs';
+import setupCheckout from './checkout.mjs';
 
 const getPricePerUnit = (product) => {
     const price = Number(product.price).toFixed(2).replace('.', ',');
@@ -237,4 +238,5 @@ document.addEventListener('DOMContentLoaded', async () => {
 
     updateCart();
     updateNavbar();
+    setupCheckout(session);
 });
