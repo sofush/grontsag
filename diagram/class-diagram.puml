@@ -79,25 +79,31 @@ class User {
   + save(): Promise
 }
 
-' Clases
+' Clases - Order
 class OrderRoute {
   - orderController: OrderController
+  - cartController: CartController
+  - productController: ProductController
   + constructor(): OrderController
   + setupMiddleware(): Router
 }
 class OrderController {
-  + createOrder()
+  + createOrder(userId: string)
   + readOrders(userId: string)
   + updateOrder(orderId: string, order: Order)
 }
 class Order {
   + id: string
   + userId: string
-  + checkoutSessions: ChekcoutSession[]
-}
-class CheckoutSession {
   + products: string[]
-  + status: boolean
+  + status: string
+  + find(query): Order[]
+  + findOneAndUpdate(filter, query, options): Order
+  + save(): Promise
+}
+class OrderProduct {
+  + productId: string
+  + amount: number
 }
 
 ' Relationships from Server to routes
@@ -109,9 +115,11 @@ Server ..> OrderRoute
 
 ' Relationships from routes to controllers
 ProductRoute "1\t" *-- "1" ProductController
-CartRoute "1 " *-- "1 " CartController
-UserRoute "1 " *-- "1  " UserController
-OrderRoute "1 " *-- "1 " OrderController
+CartRoute "1  " *-- "1 " CartController
+UserRoute "1 " *-- "1   " UserController
+OrderRoute "1 " *-- "1   " OrderController
+OrderRoute "1" *-- "1" CartController
+OrderRoute "1" *-- "1" ProductController
 
 ' Relationships from controllers to models
 ProductController ..> Product
@@ -121,5 +129,5 @@ OrderController ..> Order
 
 ' Relationships between models
 Cart ..> CartedProduct
-Order ..> CheckoutSession
+Order ..> OrderProduct
 @enduml

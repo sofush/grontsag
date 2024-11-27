@@ -24,18 +24,19 @@ class Ordre {
   id
   bruger id
   produkter
-}
-class Betaling {
-  id
   status
-  ordre
+}
+enum Status {
+  bestilt
+  betalt
+  klar
+  hentet
 }
 
 ' Relationships
 KurvProdukt "0..m" -- "1" Produkt: \t\t
 Bruger "1" -- "0..m" KurvProdukt
 Ordre "0..m" -- "1..m" Produkt
-Ordre "1" -- "0..m" Betaling
 Bruger "1" -- "0..m" Ordre
-
+Ordre "1" -- "1" Status
 @enduml
