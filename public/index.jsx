@@ -369,23 +369,52 @@ const updateNavbar = async () => {
     }
 };
 
+const updateOrders = async () => {
+    console.log('updating orders...');
+    const products = await productsCollection.get();
+    const orders = await orderCollection.get();
+    const orderGroupContainerEl = document.getElementById('order-group-container');
+
+    Array.from(orderGroupContainerEl.getElementsByClassName('container-group'))
+        .forEach(e => e.remove());
+
+    orders.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+    const ordersGroupedByDate = orders.reduce((groups, order) => {
+        const date = new Date(order.createdAt).toISOString().split('T')[0];
+
+        if (!groups[date])
+            groups[date] = [];
+
+        groups[date].push(order);
+        return groups;
+    }, {});
+
+    for (const date in ordersGroupedByDate) {
+        const groupOfOrders = ordersGroupedByDate[date];
+        const translatedDate = translateDate(date);
+        createOrderGroupElement(orderGroupContainerEl, groupOfOrders, products, translatedDate);
+    }
+};
+
 const session = new Session();
 const productsCollection = new ProductCollection();
 const orderCollection = new OrderCollection(session);
 new Login(session, () => {
+    orderCollection.refresh();
     updateCart();
+    updateOrders();
     updateNavbar();
 });
 
 document.addEventListener('DOMContentLoaded', async () => {
     const products = await productsCollection.get();
-    const orders = await orderCollection.get();
 
     for (const idx in products) {
         addProduct(products[idx]);
     }
 
     updateCart();
+    updateOrders();
     updateNavbar();
     setupCheckout(session);
 
@@ -396,27 +425,10 @@ document.addEventListener('DOMContentLoaded', async () => {
         case '/':
             const productsEl = document.getElementById('catalog');
             productsEl.classList.remove('!hidden');
+            break;
         case '/orders':
             const ordersEl = document.getElementById('orders');
-            const orderContainerEl = document.getElementById('order-group-container');
-
-            orders.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
-            const ordersGroupedByDate = orders.reduce((groups, order) => {
-                const date = new Date(order.createdAt).toISOString().split('T')[0];
-
-                if (!groups[date])
-                    groups[date] = [];
-
-                groups[date].push(order);
-                return groups;
-            }, {});
-
-            for (const date in ordersGroupedByDate) {
-                const groupOfOrders = ordersGroupedByDate[date];
-                const translatedDate = translateDate(date);
-                createOrderGroupElement(orderContainerEl, groupOfOrders, products, translatedDate);
-            }
-
             ordersEl.classList.remove('!hidden');
+            break;
     }
 });

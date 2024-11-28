@@ -8,8 +8,12 @@ class OrderCollection {
         if (this.orders)
             return this.orders;
 
-        this.orders = await this.#fetchOrders();
-        return this.orders;
+        this.orders = this.#fetchOrders();
+        return await this.orders;
+    }
+
+    async refresh() {
+        this.orders = this.#fetchOrders();
     }
 
     async #fetchOrders() {
