@@ -4,7 +4,9 @@ import { jwtDecode } from 'jwt-decode';
 import Login from './login.mjs';
 import Session from './session.mjs';
 import ProductCollection from './productCollection.mjs';
+import OrderCollection from './orderCollection.mjs';
 import setupCheckout from './checkout.mjs';
+import order from '../src/models/order.mjs';
 
 const getPricePerUnit = (product) => {
     const price = Number(product.price).toFixed(2).replace('.', ',');
@@ -55,6 +57,66 @@ const createProductElement = (product) => {
         </div>
     );
 }
+
+const createOrderElement = (products, status) => {
+    const themes = {
+        'ordered': { tag: 'Afventer betaling', borderColor: 'border-[#1e88e5]', bgColor: 'bg-[#e3f2fd]', tagBgColor: 'bg-[#1e88e5]', icon: '' },
+        'paid': { tag: 'Forbereder ordre', borderColor: 'border-[#ca9228]', bgColor: 'bg-[#fff6cc]', tagBgColor: 'bg-[#ca9228]', icon: '' },
+        'ready': { tag: 'Klar til afhentning', borderColor: 'border-[#718355]', bgColor: 'bg-[#e9edc9]', tagBgColor: 'bg-[#718355]', icon: '' },
+        'complete': { tag: 'Ordre er hentet', borderColor: 'border-[#164a1c]', bgColor: 'bg-[#dbe7d7]', tagBgColor: 'bg-[#164a1c]', icon: '' },
+    };
+
+    const theme = themes[status] ?? { tag: 'Ukendt status', borderColor: 'border-gray-700', bgColor: 'bg-stone-100', tagBgColor: 'bg-gray-600', icon: '' };
+    const outerClassList = `border-2 ${ theme.borderColor } ${ theme.bgColor } min-w-[500px] rounded-[6px] py-[16px] px-[24px]`;
+    const innerClassList = `flex *:flex-initial *:text-sm *:text-white font-inter-medium rounded-[4px] ${ theme.tagBgColor } py-[3px] px-[8px] mb-[6px]`;
+
+    return (
+        <div>
+            <div class={ outerClassList }>
+                <div class={ innerClassList }>
+                    <i class="text-[12px] content-center mr-[8px]">{ theme.icon }</i>
+                    <div class="uppercase">{ theme.tag }</div>
+                </div>
+                <div class="font-inter-medium text-lg underline">Varer</div>
+                {
+                    products.map(prod => (
+                        <div>{ prod.amount }x { prod.name }</div>
+                    ))
+                }
+                <div class="font-inter-medium text-lg mt-[16px] underline">Status</div>
+                <div>Bestilt d. 28/11/2024 14:30</div>
+                <div>Betalt d. 28/11/2024 14:35</div>
+                <div>Klar til afhentning d. 28/11/2024 15:25</div>
+                <div>Hentet d. 28/11/2024 15:40</div>
+            </div>
+        </div>
+    );
+};
+
+const createOrderGroupElement = (orders, products, date) => {
+    const orderElements = orders.map(order => {
+        const simpleProducts = order.products.map(prod => {
+            const name = products.find(p => p.id === prod.id).name ?? 'Ukendt';
+            return { amount: prod.amount, name: name };
+        });
+
+        return createOrderElement(simpleProducts, order.status);
+    });
+
+    return (
+        <div>
+            <div class="max-w-0 max-h-0">
+                <div class="relative w-[32px] h-[32px] rounded-full -left-[26px] bg-[#9AB973] border-[#dbe7d7] outline outline-background outline-[5px] border-[5px] aspect-square"></div>
+            </div>
+            <div class="ml-[26px] mb-[10px]">
+                <div class="text-sm font-inter-medium uppercase inline-block mb-[6px]">{ date }</div>
+                <div class="flex flex-wrap gap-[12px]">
+                    { orderElements }
+                </div>
+            </div>
+        </div>
+    );
+};
 
 const addToCart = async (product, amount) => {
     const bodyContent = JSON.stringify({
@@ -224,6 +286,7 @@ const updateNavbar = async () => {
 
 const session = new Session();
 const productsCollection = new ProductCollection();
+const orderCollection = new OrderCollection(session);
 new Login(session, () => {
     updateCart();
     updateNavbar();
@@ -231,6 +294,7 @@ new Login(session, () => {
 
 document.addEventListener('DOMContentLoaded', async () => {
     const products = await productsCollection.get();
+    const orders = await orderCollection.get();
 
     for (const idx in products) {
         addProduct(products[idx]);
@@ -239,4 +303,21 @@ document.addEventListener('DOMContentLoaded', async () => {
     updateCart();
     updateNavbar();
     setupCheckout(session);
+
+    const url = new URL(window.location.href);
+
+    switch (url.pathname) {
+        default:
+        case '/':
+            const productsEl = document.getElementById('catalog');
+            productsEl.classList.remove('!hidden');
+        case '/orders':
+            const ordersEl = document.getElementById('orders');
+            const orderContainerEl = document.getElementById('order-group-container');
+
+            const orderGroupContainerEl = createOrderGroupElement(orders, products, 'I dag');
+            orderContainerEl.insertAdjacentHTML('beforeend', orderGroupContainerEl);
+
+            ordersEl.classList.remove('!hidden');
+    }
 });

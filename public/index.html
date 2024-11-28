@@ -38,7 +38,7 @@
             </div>
         </div>
     </div>
-    <div id="catalog" class="lg:flex gap-[16px] md:mt-[32px]">
+    <div id="catalog" class="!hidden lg:flex gap-[16px] md:mt-[32px]">
         <div id="cart" class="@container mx-auto justify-center overflow-hidden max-w-[600px] lg:max-w-none mb-[16px] flex-grow lg:mb-auto flex-initial border-2 rounded-[16px] top-0 bg-gray-bright order-2">
             <div class="flex justify-center mt-[16px] mb-[22px] lg:mb-[36px] [text-shadow:_0_4px_4px_rgb(0_0_0_/_25%)]">
                 <div class="content-center mr-[10px] mb-[4px]">
@@ -82,6 +82,17 @@
             </div>
         </div>
         <div id="product-list"></div>
+    </div>
+    <div id="orders" class="!hidden max-w-[1100px] m-auto">
+        <div class="font-serif text-[28px] font-semibold decoration-green-price underline decoration-2">
+            Dine ordre
+        </div>
+        <div class="flex my-[10px] ml-[20px]">
+            <div id="timeline" class="min-h-full w-[20px] flex-initial">
+                <div id="timeline" class="min-h-full w-[8px] bg-[#e8eaef] m-auto rounded-sm"></div>
+            </div>
+            <div id="order-group-container" class="flex flex-col flex-1 my-[16px]"></div>
+        </div>
     </div>
     <div id="popup-container" class="hidden z-100 relative">
         <div id="popup-background" class="inset-0 z-90 fixed bg-stone-300/70 cursor-pointer"></div>

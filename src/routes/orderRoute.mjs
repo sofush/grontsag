@@ -24,6 +24,16 @@ class OrderRoute {
     setupRouter() {
         const router = new express.Router();
 
+        router.get('/api/orders', async (req, res) => {
+            const user = verifyJwt(req.headers.authorization);
+
+            if (!user)
+                return handleInvalidCredentials(req, res);
+
+            const orders = await this.orderController.readOrders(user.id);
+            return res.status(200).json(orders);
+        });
+
         router.get('/api/order/new', async (req, res) => {
             const user = verifyJwt(req.headers.authorization);
 
