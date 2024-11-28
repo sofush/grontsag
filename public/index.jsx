@@ -5,8 +5,53 @@ import Login from './login.mjs';
 import Session from './session.mjs';
 import ProductCollection from './productCollection.mjs';
 import OrderCollection from './orderCollection.mjs';
-import setupCheckout from './checkout.mjs';
-import order from '../src/models/order.mjs';
+import { setupCheckout, createCheckoutSession } from './checkout.mjs';
+
+const translateDate = (dateArg) => {
+    const date = new Date(dateArg);
+    const today = new Date();
+    const yesterday = new Date(today);
+    yesterday.setDate(today.getDate() - 1);
+
+    if (!(date instanceof Date)) {
+        console.error('date argument is not instanceof date');
+        return;
+    }
+
+    if (today.getFullYear() === date.getFullYear() &&
+        today.getMonth() === date.getMonth() &&
+        today.getDate() === date.getDate()
+    ) {
+        return 'I dag';
+    }
+
+    if (yesterday.getFullYear() === date.getFullYear() &&
+        yesterday.getMonth() === date.getMonth() &&
+        yesterday.getDate() === date.getDate()
+    ) {
+        return 'I går';
+    }
+
+    var month = '';
+
+    switch (date.getMonth()) {
+        case 0: month = 'januar'; break;
+        case 1: month = 'februar'; break;
+        case 2: month = 'marts'; break;
+        case 3: month = 'april'; break;
+        case 4: month = 'maj'; break;
+        case 5: month = 'juni'; break;
+        case 6: month = 'juli'; break;
+        case 7: month = 'august'; break;
+        case 8: month = 'september'; break;
+        case 9: month = 'oktober'; break;
+        case 10: month = 'november'; break;
+        case 11: month = 'december'; break;
+        default: date.getMonth() + 1; break;
+    }
+
+    return `${date.getDate()}. ${month} ${date.getFullYear()}`;
+};
 
 const getPricePerUnit = (product) => {
     const price = Number(product.price).toFixed(2).replace('.', ',');
@@ -58,7 +103,7 @@ const createProductElement = (product) => {
     );
 }
 
-const createOrderElement = (products, status) => {
+const createOrderElement = (orderGroupEl, products, order) => {
     const themes = {
         'ordered': { tag: 'Afventer betaling', borderColor: 'border-[#1e88e5]', bgColor: 'bg-[#e3f2fd]', tagBgColor: 'bg-[#1e88e5]', icon: '' },
         'paid': { tag: 'Forbereder ordre', borderColor: 'border-[#ca9228]', bgColor: 'bg-[#fff6cc]', tagBgColor: 'bg-[#ca9228]', icon: '' },
@@ -66,56 +111,96 @@ const createOrderElement = (products, status) => {
         'complete': { tag: 'Ordre er hentet', borderColor: 'border-[#164a1c]', bgColor: 'bg-[#dbe7d7]', tagBgColor: 'bg-[#164a1c]', icon: '' },
     };
 
-    const theme = themes[status] ?? { tag: 'Ukendt status', borderColor: 'border-gray-700', bgColor: 'bg-stone-100', tagBgColor: 'bg-gray-600', icon: '' };
+    const theme = themes[order.status] ?? { tag: 'Ukendt status', borderColor: 'border-gray-700', bgColor: 'bg-stone-100', tagBgColor: 'bg-gray-600', icon: '' };
     const outerClassList = `border-2 ${ theme.borderColor } ${ theme.bgColor } min-w-[500px] rounded-[6px] py-[16px] px-[24px]`;
     const innerClassList = `flex *:flex-initial *:text-sm *:text-white font-inter-medium rounded-[4px] ${ theme.tagBgColor } py-[3px] px-[8px] mb-[6px]`;
 
-    return (
-        <div>
+    const createEvent = (date, msg) => {
+        if (!date || !msg) return;
+        const dateObj = new Date(date);
+        const hours = dateObj.getHours().toString().padStart(2, '0');
+        const minutes = dateObj.getMinutes().toString().padStart(2, '0');
+        const formattedDate = `${dateObj.getDate()}/${dateObj.getMonth() + 1}/${dateObj.getFullYear()} ${hours}:${minutes}`;
+
+        return (
+            <div>
+                <strong>{ formattedDate }: </strong>
+                { msg }
+            </div>
+        )
+    };
+
+    const createdAtEl = createEvent(order.createdAt, 'Ordren blev oprettet');
+    const paidAtEl = createEvent(order.paidAt, 'Ordren blev betalt');
+    const readyAtEl = createEvent(order.readyAt, 'Klar til levering');
+    const deliveredAtEl = createEvent(order.deliveredAt, 'Hentet blev hentet');
+
+    const payNowButtonEl = order.status === 'ordered' ? (
+        <div class={`cursor-pointer checkout-order-button group inline-flex mt-[10px] *:text-sm font-inter-medium rounded ${ theme.tagBgColor } active:bg-blue-600 px-[10px] py-[5px] *:text-white select-none`}>
+            <div class="group-hover:underline decoration-2">Betal nu</div>
+            <i class="content-center ml-[8px]"></i>
+        </div>
+    ) : undefined;
+
+    const orderHtml = (
+        <div class="order">
             <div class={ outerClassList }>
                 <div class={ innerClassList }>
                     <i class="text-[12px] content-center mr-[8px]">{ theme.icon }</i>
                     <div class="uppercase">{ theme.tag }</div>
                 </div>
-                <div class="font-inter-medium text-lg underline">Varer</div>
+                <div class="text-gray-800 text-[10px] mb-[4px]">ID: { order.id }</div>
+                <div class="font-inter-medium text-lg">Varer</div>
                 {
                     products.map(prod => (
-                        <div>{ prod.amount }x { prod.name }</div>
+                        <div><strong>{ prod.amount }x</strong> { prod.name }</div>
                     ))
                 }
-                <div class="font-inter-medium text-lg mt-[16px] underline">Status</div>
-                <div>Bestilt d. 28/11/2024 14:30</div>
-                <div>Betalt d. 28/11/2024 14:35</div>
-                <div>Klar til afhentning d. 28/11/2024 15:25</div>
-                <div>Hentet d. 28/11/2024 15:40</div>
+                <div class="font-inter-medium text-lg mt-[16px]">Status</div>
+                { createdAtEl }
+                { paidAtEl }
+                { readyAtEl }
+                { deliveredAtEl }
+                { payNowButtonEl }
             </div>
         </div>
     );
+
+    const orderContainer = orderGroupEl.getElementsByClassName('order-container')[0];
+    orderContainer.insertAdjacentHTML('beforeend', orderHtml);
+    const orderEls = orderGroupEl.getElementsByClassName('order');
+    const payButton = orderEls[orderEls.length - 1].getElementsByClassName('checkout-order-button')[0];
+    if (payButton) {
+        payButton.addEventListener('click', async () => {
+            const checkoutSession = await createCheckoutSession(session, order);
+            window.location.replace(checkoutSession.url);
+        });
+    }
 };
 
-const createOrderGroupElement = (orders, products, date) => {
-    const orderElements = orders.map(order => {
-        const simpleProducts = order.products.map(prod => {
-            const name = products.find(p => p.id === prod.id).name ?? 'Ukendt';
-            return { amount: prod.amount, name: name };
-        });
-
-        return createOrderElement(simpleProducts, order.status);
-    });
-
-    return (
-        <div>
+const createOrderGroupElement = (container, orders, products, date) => {
+    const groupEl = (
+        <div class="container-group">
             <div class="max-w-0 max-h-0">
                 <div class="relative w-[32px] h-[32px] rounded-full -left-[26px] bg-[#9AB973] border-[#dbe7d7] outline outline-background outline-[5px] border-[5px] aspect-square"></div>
             </div>
             <div class="ml-[26px] mb-[10px]">
                 <div class="text-sm font-inter-medium uppercase inline-block mb-[6px]">{ date }</div>
-                <div class="flex flex-wrap gap-[12px]">
-                    { orderElements }
-                </div>
+                <div class="order-container flex flex-wrap gap-[12px]"></div>
             </div>
         </div>
     );
+
+    container.insertAdjacentHTML('beforeend', groupEl);
+    const orderGroupEls = container.getElementsByClassName('container-group');
+    orders.forEach(order => {
+        const simpleProducts = order.products.map(prod => {
+            const name = products.find(p => p.id === prod.id).name ?? 'Ukendt';
+            return { amount: prod.amount, name: name };
+        });
+
+        createOrderElement(orderGroupEls[orderGroupEls.length - 1], simpleProducts, order);
+    });
 };
 
 const addToCart = async (product, amount) => {
@@ -315,8 +400,22 @@ document.addEventListener('DOMContentLoaded', async () => {
             const ordersEl = document.getElementById('orders');
             const orderContainerEl = document.getElementById('order-group-container');
 
-            const orderGroupContainerEl = createOrderGroupElement(orders, products, 'I dag');
-            orderContainerEl.insertAdjacentHTML('beforeend', orderGroupContainerEl);
+            orders.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+            const ordersGroupedByDate = orders.reduce((groups, order) => {
+                const date = new Date(order.createdAt).toISOString().split('T')[0];
+
+                if (!groups[date])
+                    groups[date] = [];
+
+                groups[date].push(order);
+                return groups;
+            }, {});
+
+            for (const date in ordersGroupedByDate) {
+                const groupOfOrders = ordersGroupedByDate[date];
+                const translatedDate = translateDate(date);
+                createOrderGroupElement(orderContainerEl, groupOfOrders, products, translatedDate);
+            }
 
             ordersEl.classList.remove('!hidden');
     }

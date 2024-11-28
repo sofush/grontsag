@@ -27,6 +27,13 @@ export default class OrderController {
     }
 
     async updateOrder(order) {
-        throw 'not implemented';
+        if (!order || !order.id)
+            throw 'Order argument must have field `id`';
+
+        return await Order.findOneAndUpdate(
+            { id: order.id },
+            order,
+            { new: true }
+        );
     }
 }

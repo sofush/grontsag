@@ -95,7 +95,7 @@ class OrderRoute {
                 line_items: lineItems,
                 mode: 'payment',
                 success_url: `http://localhost:3000/api/order/success?session_id={CHECKOUT_SESSION_ID}`,
-                cancel_url: 'http://localhost:3000/api/order/cancel?session_id={CHECKOUT_SESSION_ID}',
+                cancel_url: 'http://localhost:3000/orders',
                 metadata: {
                     order_id: order.id,
                 }
@@ -114,26 +114,17 @@ class OrderRoute {
             try {
                 const session = await s.checkout.sessions.retrieve(sessionId);
                 const orderId = session.metadata.order_id;
+                const order = await this.orderController.updateOrder({
+                    id: orderId,
+                    paidAt: new Date(),
+                    status: 'paid',
+                });
 
-                res.send(`Order ${orderId} has been successfully processed!`);
-            } catch (error) {
-                console.error(error);
-                res.status(500).send('Failed to retrieve session');
-            }
-        });
+                if (req.accepts('html')) {
+                    return res.redirect('/orders');
+                }
 
-        router.get('/api/order/cancel', async (req, res) => {
-            const sessionId = req.query.session_id;
-
-            if (!sessionId) {
-                return res.status(400).send('Missing session ID');
-            }
-
-            try {
-                const session = await s.checkout.sessions.retrieve(sessionId);
-                const orderId = session.metadata.order_id;
-
-                res.send(`Order ${orderId} has been cancelled!`);
+                res.status(200).json(order);
             } catch (error) {
                 console.error(error);
                 res.status(500).send('Failed to retrieve session');

@@ -16,7 +16,7 @@ const createNewOrder = async (session) => {
     return await header.json();
 };
 
-const redirectToCheckout = async (session, order) => {
+export const createCheckoutSession = async (session, order) => {
     const header = await fetch('/api/order/pay', {
         method: 'POST',
         headers: new Headers({
@@ -37,17 +37,16 @@ const redirectToCheckout = async (session, order) => {
     return await header.json();
 };
 
-const setupCheckout = (session) => {
+export const setupCheckout = (session) => {
     const checkoutButtonEls = document.getElementsByClassName('checkout-button');
 
     for (let index = 0; index < checkoutButtonEls.length; index++) {
         const checkoutButtonEl = checkoutButtonEls[index];
         checkoutButtonEl.addEventListener('click', async () => {
             const order = await createNewOrder(session);
-            const checkoutSession = await redirectToCheckout(session, order);
+            const checkoutSession = await createCheckoutSession(session, order);
             window.location.replace(checkoutSession.url);
         });
     }
 };
 
-export default setupCheckout;

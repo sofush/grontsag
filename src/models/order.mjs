@@ -14,6 +14,10 @@ const orderSchema = new mongoose.Schema({
         enum: [ 'ordered', 'paid', 'ready', 'complete' ],
         required: true,
     },
+    createdAt: { type: Date, required: true, default: Date.now },
+    paidAt: { type: Date },
+    readyAt: { type: Date },
+    deliveredAt: { type: Date },
 });
 
 export default mongoose.model('Order', orderSchema);
