@@ -2,6 +2,20 @@
 @tailwind components;
 @tailwind utilities;
 
+@layer components {
+  .is-error {
+    @apply bg-red-100 border-red-700;
+  }
+
+  .is-waiting {
+    @apply bg-[#fff6cc] border-[#ca9228];
+  }
+
+  .is-success {
+    @apply bg-green-bright border-green-dark;
+  }
+}
+
 @layer base {
   @font-face {
     font-family: Inter;
