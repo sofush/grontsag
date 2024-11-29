@@ -25,3 +25,9 @@ i {
   font-weight: normal;
   font-style: normal;
 }
+
+html,
+body {
+  height: 100%;
+  margin: 0;
+}
