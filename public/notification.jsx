@@ -4,7 +4,7 @@ import { v4 as uuidv4 } from 'uuid';
 
 const createElement = (id) => {
     return (
-        <div id={id} class="group select-none is-error z-[10000] flex max-w-[350px] w-[350px] py-[10px] pr-[10px] rounded-md border-[2px]">
+        <div id={id} class="group select-none is-error flex max-w-[350px] w-[350px] py-[10px] pr-[10px] rounded-md border-[2px]">
             <i class="notification-icon flex-initial mx-[24px] text-[28px] content-center group-[.is-error]:text-red-700 group-[.is-success]:text-green-dark group-[.is-waiting]:text-yellow-700 group-[.is-waiting]:animate-spin"></i>
             <div class="flex flex-1 flex-col pl-[20px] border-l-[3px] group-[.is-error]:border-red-700 group-[.is-success]:border-green-dark group-[.is-waiting]:border-yellow-700">
                 <div class="notification-title font-inter-medium"></div>
