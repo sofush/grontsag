@@ -8,7 +8,7 @@
     "start": "node src/app.mjs",
     "test": "node --experimental-vm-modules node_modules/jest/bin/jest.js",
     "build": "webpack && npx tailwindcss -i ./public/input.css -o ./dist/style.css",
-    "watch": "nodemon --exec \"npm run build && node src/app.mjs\" -e mjs,jsx,html,css,png --ignore dist/"
+    "watch": "nodemon --exec \"npm run build && node src/app.mjs\" -e mjs,jsx,html,css,png,svg --ignore dist/"
   },
   "author": "sofush",
   "license": "ISC",
