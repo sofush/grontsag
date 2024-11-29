@@ -133,7 +133,7 @@ const createOrderElement = (orderGroupEl, products, order) => {
     const createdAtEl = createEvent(order.createdAt, 'Ordren blev oprettet');
     const paidAtEl = createEvent(order.paidAt, 'Ordren blev betalt');
     const readyAtEl = createEvent(order.readyAt, 'Klar til levering');
-    const deliveredAtEl = createEvent(order.deliveredAt, 'Hentet blev hentet');
+    const deliveredAtEl = createEvent(order.deliveredAt, 'Ordren blev hentet');
 
     const payNowButtonEl = order.status === 'ordered' ? (
         <div class={`cursor-pointer checkout-order-button group inline-flex mt-[10px] *:text-sm font-inter-medium rounded ${ theme.tagBgColor } active:bg-blue-600 px-[10px] py-[5px] *:text-white select-none`}>
