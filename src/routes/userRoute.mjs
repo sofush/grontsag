@@ -41,7 +41,6 @@ class UserRoute {
 
         router.get('/api/user/new', async (_req, res) => {
             const user = await this.userController.createUser();
-            console.error(`created user: ${user.toJSON()}`);
             const token = jwt.sign(user.toJSON(), secret);
             res.status(200).json({ jwt: token });
         });
