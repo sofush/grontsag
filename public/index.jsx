@@ -469,6 +469,16 @@ const switchPage = (path, updatePath) => {
             ordersEl.classList.remove('!hidden');
             updateHistory('Ordre - Grøntsagsbutik');
             break;
+        case '/success':
+            const queryString = window.location.search;
+            const urlParams = new URLSearchParams(queryString);
+            const orderId = urlParams.get('id');
+            const orderConfirmationEl = document.getElementById('order-confirmation');
+            const orderConfirmationIdEl = document.getElementById('order-confirmation-id');
+            orderConfirmationIdEl.innerText = `Ordre id: ${orderId}`;
+            orderConfirmationEl.classList.remove('hidden');
+            switchPage('/orders', true);
+            break;
     }
 };
 

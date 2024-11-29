@@ -121,7 +121,7 @@ class OrderRoute {
                 });
 
                 if (req.accepts('html')) {
-                    return res.redirect('/orders');
+                    return res.redirect(`/success?id=${orderId}`);
                 }
 
                 res.status(200).json(order);
