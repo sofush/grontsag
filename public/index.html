@@ -7,8 +7,8 @@
     <link href="/dist/style.css" rel="stylesheet">
     <link rel="icon" href="/dist/svg/favicon.svg">
 </head>
-<body class="max-w-[1300px] px-[10px] md:px-[30px] lg:px-[50px] m-auto bg-background">
-    <div id="navigation" class="md:h-[130px] md:flex">
+<body class="flex flex-col max-w-[1300px] px-[10px] md:px-[30px] lg:px-[50px] mx-auto bg-background">
+    <div id="navigation" class="flex-initial shrink-0 md:h-[130px] md:flex">
         <div class="flex gap-[14px] justify-center select-none">
             <i class="content-center text-[#2E6D35] text-[40px] [text-shadow:_0_4px_4px_rgb(0_0_0_/_25%)]"></i>
             <div id="branding" class="flex-initial text-center content-center text-[32px] font-serif font-medium text-green-price [text-shadow:_0_4px_4px_rgb(0_0_0_/_25%)]">
@@ -29,7 +29,7 @@
             <div id="navbar-orders" class="content-center text-[16px] hover:underline decoration-2">
                 Mine ordrer
             </div>
-            <div class="checkout-button group hover:drop-shadow-md hover:shadow-none active:bg-[#ced9ca] shadow-button flex justify-center border-2 rounded-[5px] border-green-dark bg-green-bright w-[167px]">
+            <div id="navbar-checkout" class="checkout-button group hover:drop-shadow-md hover:shadow-none active:bg-[#ced9ca] shadow-button flex justify-center border-2 rounded-[5px] border-green-dark bg-green-bright w-[167px]">
                 <div class="group-hover:underline decoration-2 decoration-green-price content-center text-button-text text-[15px] text-green-dark font-inter-medium">
                     Gå til betaling
                 </div>
@@ -84,10 +84,17 @@
         </div>
         <div id="product-list"></div>
     </div>
-    <div id="orders" class="!hidden max-w-[1100px] m-auto">
+    <div id="orders" class="!hidden max-w-[1100px] m-auto flex-1 flex flex-col">
+        <div id="no-orders-notice" class="!hidden flex-1 text-center content-center mb-[40px]">
+            <div class="flex flex-col">
+                <i class="text-[32px] text-gray-500 mb-[6px]"></i>
+                <div class="font-inter-medium text-[16px] text-gray-600">Ordreoversigten er tom.</div>
+                <div class="font-inter-medium text-[16px] text-gray-600">Du kan oprette en ordre i shoppen.</div>
+            </div>
+        </div>
         <div class="flex my-[10px] ml-[20px]">
-            <div id="timeline" class="min-h-full w-[20px] flex-initial">
-                <div id="timeline" class="min-h-full w-[8px] bg-[#e8eaef] m-auto rounded-sm"></div>
+            <div id="timeline" class="!hidden min-h-full w-[20px] flex-initial">
+                <div class="min-h-full w-[8px] bg-[#e8eaef] m-auto rounded-sm"></div>
             </div>
             <div id="order-group-container" class="flex flex-col flex-1 my-[16px]"></div>
         </div>

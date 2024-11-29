@@ -370,13 +370,22 @@ const updateNavbar = async () => {
 };
 
 const updateOrders = async () => {
-    console.log('updating orders...');
     const products = await productsCollection.get();
     const orders = await orderCollection.get();
     const orderGroupContainerEl = document.getElementById('order-group-container');
+    const noOrdersNoticeEl = document.getElementById('no-orders-notice');
+    const timelineEl = document.getElementById('timeline');
 
     Array.from(orderGroupContainerEl.getElementsByClassName('container-group'))
         .forEach(e => e.remove());
+
+    if (orders.length === 0) {
+        noOrdersNoticeEl.classList.remove('!hidden');
+        timelineEl.classList.add('!hidden');
+    } else {
+        noOrdersNoticeEl.classList.add('!hidden');
+        timelineEl.classList.remove('!hidden');
+    }
 
     orders.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
     const ordersGroupedByDate = orders.reduce((groups, order) => {
@@ -393,6 +402,32 @@ const updateOrders = async () => {
         const groupOfOrders = ordersGroupedByDate[date];
         const translatedDate = `Oprettet ${translateDate(date)}`;
         createOrderGroupElement(orderGroupContainerEl, groupOfOrders, products, translatedDate);
+    }
+};
+
+const switchPage = (path, updatePath) => {
+    const productsEl = document.getElementById('catalog');
+    const ordersEl = document.getElementById('orders');
+
+    const updateHistory = (title) => {
+        if (!!updatePath)
+            window.history.replaceState(null, '', path);
+
+        document.title = title;
+    };
+
+    switch (path) {
+        default:
+        case '/':
+            ordersEl.classList.add('!hidden');
+            productsEl.classList.remove('!hidden');
+            updateHistory('Katalog - Grøntsagsbutik');
+            break;
+        case '/orders':
+            productsEl.classList.add('!hidden');
+            ordersEl.classList.remove('!hidden');
+            updateHistory('Ordre - Grøntsagsbutik');
+            break;
     }
 };
 
@@ -419,16 +454,11 @@ document.addEventListener('DOMContentLoaded', async () => {
     setupCheckout(session);
 
     const url = new URL(window.location.href);
+    switchPage(url.pathname);
 
-    switch (url.pathname) {
-        default:
-        case '/':
-            const productsEl = document.getElementById('catalog');
-            productsEl.classList.remove('!hidden');
-            break;
-        case '/orders':
-            const ordersEl = document.getElementById('orders');
-            ordersEl.classList.remove('!hidden');
-            break;
-    }
+    const shopButtonEl = document.getElementById('navbar-shop');
+    const ordersButtonEl = document.getElementById('navbar-orders');
+
+    shopButtonEl.addEventListener('click', () => switchPage('/', true));
+    ordersButtonEl.addEventListener('click', () => switchPage('/orders', true));
 });
