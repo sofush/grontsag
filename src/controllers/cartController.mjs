@@ -13,7 +13,7 @@ export default class CartController {
         }).save();
     }
 
-    async updateProduct(userId, productId, amount) {
+    async updateProduct(userId, productId, amount, additive) {
         const cart = await Cart.findOne({ userId: userId });
 
         if (!cart) {
@@ -26,11 +26,15 @@ export default class CartController {
         const existingProductIndex = cart.products.findIndex(p => p.productId === productId);
 
         if (existingProductIndex >= 0) {
-            cart.products[existingProductIndex].amount += amount;
-        } else {
+            if (additive)
+                cart.products[existingProductIndex].amount += amount;
+            else
+                cart.products[existingProductIndex].amount = amount;
+        } else if (amount > 0) {
             cart.products.push({ productId: productId, amount: amount });
         }
 
+        cart.products = cart.products.filter(p => p.amount > 0);
         return await cart.save();
     }
 

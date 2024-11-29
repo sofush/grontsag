@@ -228,6 +228,32 @@ const addToCart = async (product, amount) => {
     await updateCart(cart);
 };
 
+const removeFromCart = async (product, el) => {
+    const bodyContent = JSON.stringify({
+        productId: product.id,
+        amount: 0,
+        additive: false,
+    });
+
+    const header = await fetch('/api/cart/add', {
+        method: 'POST',
+        headers: new Headers({
+            'Authorization': await session.get(),
+            'Accept': 'application/json',
+            'Content-Type': 'application/json'
+        }),
+        body: bodyContent
+    });
+
+    if (!header.ok) {
+        console.error('Could not remove product from cart');
+        return;
+    }
+
+    await updateCart(undefined, false);
+    el.remove();
+};
+
 const addProduct = (product) => {
     const productList = document.getElementById('product-list');
     const productHtml = createProductElement(product);
@@ -287,14 +313,22 @@ const createCartedProductElement = (product, amount) => {
     const totalText = `${total.toFixed(2).replace('.', ',')} DKK`;
 
     return (
-        <div class="carted-product flex justify-center mx-[5px] @[380px]:mx-[15px] @[500px]:mx-[40px] mb-[8px]">
-            <div class="min-w-[50px] w-[50px] shrink-0 grow-0 basis-initial font-inter-medium text-[16px] text-[#5A5A5A] text-right mt-[7px] mr-[8px] @[380px]:mr-[24px]">
+        <div class="group hover:bg-red-50 rounded cursor-pointer select-none carted-product flex justify-center mx-[5px] @[380px]:mx-[15px] @[500px]:mx-[40px] mb-[8px]">
+            <div class="group-hover:hidden min-w-[50px] w-[50px] shrink-0 grow-0 basis-initial font-inter-medium text-[16px] text-[#5A5A5A] text-right mt-[7px] mr-[8px] @[380px]:mr-[24px]">
                 { amount }
             </div>
-            <div class="flex-1 font-semibold text-[22px]">
-                { product.name }
-                <div class="text-sm text-green-price font-inter-medium text-[11.5px]">
+            <div class="group-hover:inline-flex hidden flex flex-col min-w-[50px] w-[50px] shrink-0 grow-0 basis-initial @[380px]:mx-[12px]">
+                <i class="flex-1 text-[22px] content-center text-center text-red-700"></i>
+            </div>
+            <div class="flex-1">
+                <div class="group-hover:line-through decoration-red-800 decoration-[3px] font-semibold text-[22px]">
+                    { product.name }
+                </div>
+                <div class="group-hover:hidden text-sm text-green-price font-inter-medium text-[11.5px]">
                     { pricePerUnit }
+                </div>
+                <div class="group-hover:block hidden text-sm text-red-800 font-inter-medium text-[11.5px]">
+                    Fjern vare
                 </div>
             </div>
             <div class="shrink-0 grow-0 basis-22 font-inter-medium text-[14px] text-green-price mt-[8px]">
@@ -304,15 +338,15 @@ const createCartedProductElement = (product, amount) => {
     );
 };
 
-const updateCart = async (cart) => {
+const updateCart = async (cart, alterElements) => {
     const cartedItemsListEl = document.getElementById('cart-items-container');
     const noticeEl = document.getElementById('cart-empty-notice');
     const totalEl = document.getElementById('cart-total');
     const vatEl = document.getElementById('cart-vat');
 
-    Array.from(document.getElementsByClassName('carted-product'))
-        .forEach(e => e.remove());
-    noticeEl.style.display = '';
+    if (alterElements ?? true)
+        Array.from(document.getElementsByClassName('carted-product'))
+            .forEach(e => e.remove());
 
     if (!cart) {
         const header = await fetch('/api/cart', {
@@ -342,8 +376,15 @@ const updateCart = async (cart) => {
         if (!product)
             return;
 
-        const el = createCartedProductElement(product, carted.amount);
-        cartedItemsListEl.insertAdjacentHTML('beforeend', el);
+        if (alterElements ?? true) {
+            const el = createCartedProductElement(product, carted.amount);
+            cartedItemsListEl.insertAdjacentHTML('beforeend', el);
+            const cartedProductEl = cartedItemsListEl.children[cartedItemsListEl.children.length - 1];
+            cartedProductEl.addEventListener('click', () => {
+                removeFromCart(product, cartedProductEl);
+            });
+        }
+
         return acc + (carted.amount * product.price);
     }, 0);
 

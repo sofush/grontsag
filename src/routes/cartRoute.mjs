@@ -3,17 +3,20 @@ import Joi from 'joi';
 import CartController from "../controllers/cartController.mjs";
 import { handleInvalidCredentials, verifyJwt } from '../util/auth.mjs';
 
+const productIdValidator = Joi.string().required().min(1);
+
 const cartedProductValidator = Joi.object({
-    productId: Joi
-        .string()
-        .required()
-        .min(1),
+    productId: productIdValidator,
 
     amount: Joi
         .number()
         .required()
         .integer()
-        .min(1),
+        .min(0),
+
+    additive: Joi
+        .boolean()
+        .default(true),
 });
 
 class CartRoute {
@@ -40,7 +43,7 @@ class CartRoute {
             if (!user)
                 return handleInvalidCredentials(req, res);
 
-            const { error, value: { productId, amount }} =
+            const { error, value: { productId, amount, additive }} =
                 cartedProductValidator.validate(req.body);
 
             if (error) {
@@ -49,7 +52,7 @@ class CartRoute {
             }
 
             const updatedCart =
-                await this.cartController.updateProduct(user.id, productId, amount);
+                await this.cartController.updateProduct(user.id, productId, amount, additive);
 
             res.status(200).json(updatedCart);
         });
