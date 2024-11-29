@@ -391,7 +391,7 @@ const updateOrders = async () => {
 
     for (const date in ordersGroupedByDate) {
         const groupOfOrders = ordersGroupedByDate[date];
-        const translatedDate = translateDate(date);
+        const translatedDate = `Oprettet ${translateDate(date)}`;
         createOrderGroupElement(orderGroupContainerEl, groupOfOrders, products, translatedDate);
     }
 };
