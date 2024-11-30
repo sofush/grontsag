@@ -6,6 +6,7 @@ import Session from './session.mjs';
 import ProductCollection from './productCollection.mjs';
 import OrderCollection from './orderCollection.mjs';
 import { setupCheckout, createCheckoutSession } from './checkout.mjs';
+import Notification from './notification.jsx';
 
 const translateDate = (dateArg) => {
     const date = new Date(dateArg);
@@ -172,7 +173,22 @@ const createOrderElement = (orderGroupEl, products, order) => {
     const payButton = orderEls[orderEls.length - 1].getElementsByClassName('checkout-order-button')[0];
     if (payButton) {
         payButton.addEventListener('click', async () => {
+            const notif = new Notification({
+                title: 'Status på omdirigering',
+                content: 'Omdirigere dig til en betalingsside.',
+                state: 'waiting',
+            });
             const checkoutSession = await createCheckoutSession(session, order);
+
+            if (!checkoutSession) {
+                notif.update({
+                    content: 'Kunne ikke oprette en betalingsside.',
+                    state: 'error',
+                    closeMs: 3000,
+                });
+                return;
+            }
+
             window.location.replace(checkoutSession.url);
         });
     }
@@ -209,6 +225,12 @@ const addToCart = async (product, amount) => {
         amount: amount,
     });
 
+    const notif = new Notification({
+        title: 'Læg i kurv',
+        content: 'Lægger din vare i kurven.',
+        state: 'waiting',
+    });
+
     const header = await fetch('/api/cart/add', {
         method: 'POST',
         headers: new Headers({
@@ -220,12 +242,25 @@ const addToCart = async (product, amount) => {
     });
 
     if (!header.ok) {
+        notif.update({
+            content: 'Kunne ikke lægge varen i kurven.',
+            state: 'error',
+            closeMs: 3000,
+        });
         console.error('Could not add product to cart');
         return;
     }
 
     const cart = await header.json();
-    await updateCart(cart);
+    const success = await updateCart(cart, { notification: notif });
+
+    if (success) {
+        notif.update({
+            content: 'Varen er lagt i kurv.',
+            state: 'success',
+            closeMs: 3000,
+        });
+    }
 };
 
 const removeFromCart = async (product, el) => {
@@ -235,6 +270,12 @@ const removeFromCart = async (product, el) => {
         additive: false,
     });
 
+    const notif = new Notification({
+        title: 'Fjern fra kurv',
+        content: 'Fjerner din vare fra kurven.',
+        state: 'waiting',
+    });
+
     const header = await fetch('/api/cart/add', {
         method: 'POST',
         headers: new Headers({
@@ -246,12 +287,29 @@ const removeFromCart = async (product, el) => {
     });
 
     if (!header.ok) {
+        notif.update({
+            content: 'Kunne ikke fjerne din vare fra kurven.',
+            state: 'error',
+            closeMs: 3000,
+        });
+
         console.error('Could not remove product from cart');
         return;
     }
 
-    await updateCart(undefined, false);
     el.remove();
+    const success = await updateCart(undefined, {
+        alterElements: false,
+        notification: notif
+    });
+
+    if (success) {
+        notif.update({
+            content: 'Varen er blevet fjernet fra kurven.',
+            state: 'success',
+            closeMs: 3000,
+        });
+    }
 };
 
 const addProduct = (product) => {
@@ -338,17 +396,25 @@ const createCartedProductElement = (product, amount) => {
     );
 };
 
-const updateCart = async (cart, alterElements) => {
+const updateCart = async (cart, options) => {
     const cartedItemsListEl = document.getElementById('cart-items-container');
     const noticeEl = document.getElementById('cart-empty-notice');
     const totalEl = document.getElementById('cart-total');
     const vatEl = document.getElementById('cart-vat');
 
-    if (alterElements ?? true)
+    options = options ?? { alterElements: true };
+
+    if (options.alterElements ?? true)
         Array.from(document.getElementsByClassName('carted-product'))
             .forEach(e => e.remove());
 
     if (!cart) {
+        if (options.notif) {
+            options.notif.update({
+                content: 'Genindlæser varene i din vogn.',
+            });
+        }
+
         const header = await fetch('/api/cart', {
             method: 'GET',
             headers: new Headers({
@@ -357,6 +423,14 @@ const updateCart = async (cart, alterElements) => {
         });
         
         if (!header.ok) {
+            if (options.notif) {
+                options.notif.update({
+                    content: 'Kunne ikke genindlæse varene i din vogn.',
+                    state: 'error',
+                    closeMs: 3000,
+                });
+            }
+
             noticeEl.style.display = '';
             console.error('Could not reach GET /api/cart');
             return;
@@ -376,7 +450,7 @@ const updateCart = async (cart, alterElements) => {
         if (!product)
             return;
 
-        if (alterElements ?? true) {
+        if (options.alterElements ?? true) {
             const el = createCartedProductElement(product, carted.amount);
             cartedItemsListEl.insertAdjacentHTML('beforeend', el);
             const cartedProductEl = cartedItemsListEl.children[cartedItemsListEl.children.length - 1];
@@ -390,6 +464,7 @@ const updateCart = async (cart, alterElements) => {
 
     totalEl.innerText = `${total.toFixed(2).replace('.', ',')} DKK`;
     vatEl.innerText = `${(total * 0.25).toFixed(2).replace('.', ',')} DKK`;
+    return true;
 };
 
 const updateNavbar = async () => {

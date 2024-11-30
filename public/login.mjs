@@ -94,7 +94,6 @@ class Login {
     async #register() {
         const emailInputEl = document.getElementById('register-email');
         const passwordInputEl = document.getElementById('register-password');
-        const emailTakenNoticeEl = document.getElementById('');
         const email = emailInputEl.value;
         const password = passwordInputEl.value;
         const res = await this.session.updateUser(email, password);

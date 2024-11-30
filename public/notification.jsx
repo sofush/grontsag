@@ -4,7 +4,7 @@ import { v4 as uuidv4 } from 'uuid';
 
 const createElement = (id) => {
     return (
-        <div id={id} class="group select-none is-error flex max-w-[350px] w-[350px] py-[10px] pr-[10px] rounded-md border-[2px]">
+        <div id={id} class="group transition ease-in-out duration-500 select-none flex max-w-[350px] w-[350px] py-[10px] pr-[10px] rounded-md border-[2px]">
             <i class="notification-icon flex-initial mx-[24px] text-[28px] content-center group-[.is-error]:text-red-700 group-[.is-success]:text-green-dark group-[.is-waiting]:text-yellow-700 group-[.is-waiting]:animate-spin"></i>
             <div class="flex flex-1 flex-col pl-[20px] border-l-[3px] group-[.is-error]:border-red-700 group-[.is-success]:border-green-dark group-[.is-waiting]:border-yellow-700">
                 <div class="notification-title font-inter-medium"></div>
@@ -15,22 +15,18 @@ const createElement = (id) => {
 };
 
 class Notification {
-    constructor(task, options, autoClose) {
+    constructor(options) {
         this.id = uuidv4();
-        this.task = task;
 
         const el = createElement(this.id);
         const containerEl = document.getElementById('notification-container');
         containerEl.insertAdjacentHTML('beforeend', el);
 
-        this.#update(options);
-
-        if (this.task && autoClose)
-            this.#doAfterTask(() => this.#removeElement())
+        this.update(options);
     }
 
-    #update(options) {
-        const el = this.#getElement();
+    update(options) {
+        const el = this.getElement();
         console.log(options);
 
         if (this.state !== options.state) {
@@ -68,20 +64,20 @@ class Notification {
             const titleEl = el.getElementsByClassName('notification-title')[0];
             titleEl.textContent = options.title;
         }
+
+        if (options.closeMs) {
+            setTimeout(() => {
+                this.getElement().remove();
+            }, options.closeMs);
+        }
     }
 
-    async #doAfterTask(cb) {
-        await this.task;
-        cb();
-    }
+    getElement() {
+        if (this.el)
+            return this.el;
 
-    #removeElement() {
-        const el = this.#getElement();
-        el.remove();
-    }
-
-    #getElement() {
-        return document.getElementById(this.id);
+        this.el = document.getElementById(this.id);
+        return this.el;
     }
 }
 

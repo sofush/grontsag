@@ -1,3 +1,5 @@
+import Notification from './notification.jsx';
+
 const createNewOrder = async (session) => {
     const header = await fetch('/api/order/new', {
         method: 'GET',
@@ -43,8 +45,30 @@ export const setupCheckout = (session) => {
     for (let index = 0; index < checkoutButtonEls.length; index++) {
         const checkoutButtonEl = checkoutButtonEls[index];
         checkoutButtonEl.addEventListener('click', async () => {
+            const notif = new Notification({
+                title: 'Status på omdirigering',
+                content: 'Omdirigere dig til en betalingsside.',
+                state: 'waiting',
+            });
+
             const order = await createNewOrder(session);
+
+            if (!order) {
+                notif.update({
+                    content: 'Kunne ikke oprette din ordre.',
+                    state: 'error',
+                });
+            }
+
             const checkoutSession = await createCheckoutSession(session, order);
+
+            if (!order) {
+                notif.update({
+                    content: 'Kunne ikke oprette betalingsside.',
+                    state: 'error',
+                });
+            }
+
             window.location.replace(checkoutSession.url);
         });
     }
