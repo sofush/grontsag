@@ -256,7 +256,7 @@ const addToCart = async (product, amount) => {
         notif.update({
             content: 'Varen er lagt i kurv.',
             state: 'success',
-            closeMs: 3000,
+            closeMs: 1250,
         });
     }
 };
@@ -305,7 +305,7 @@ const removeFromCart = async (product, el) => {
         notif.update({
             content: 'Varen er blevet fjernet fra kurven.',
             state: 'success',
-            closeMs: 3000,
+            closeMs: 1250,
         });
     }
 };

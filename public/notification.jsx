@@ -27,7 +27,6 @@ class Notification {
 
     update(options) {
         const el = this.getElement();
-        console.log(options);
 
         if (this.state !== options.state) {
             switch (this.state) {
@@ -65,7 +64,9 @@ class Notification {
             titleEl.textContent = options.title;
         }
 
-        if (options.closeMs) {
+        if (options.closeMs === 0) {
+            this.getElement.remove();
+        } else if (options.closeMs > 0) {
             setTimeout(() => {
                 this.getElement().remove();
             }, options.closeMs);
