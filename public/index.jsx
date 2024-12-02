@@ -63,7 +63,7 @@ const createProductElement = (product) => {
     const pricePerUnit = getPricePerUnit(product);
 
     return (
-        <div class="mx-auto max-w-[710px] overflow-hidden border-2 rounded-[16px] md:min-h-[218px] md:max-h-[218px] bg-gray-bright mb-[10px]">
+        <div class="overflow-hidden border-2 rounded-[16px] md:min-h-[218px] md:max-h-[218px] bg-gray-bright">
             <div class="md:flex gap-[20px] md:max-h-[218px] md:min-h-[218px]">
                 <div class="clip-border bg-[#eeeeee] min-h-[218px] min-w-[218px] lg:inline-block content-center text-center">
                     <img src={ product.image } alt="Et billede af produktet" class="m-auto content-center" height="200" width="200"/>
@@ -361,6 +361,8 @@ const addProduct = (product) => {
             }
         });
     }
+
+    return productEl;
 };
 
 const createCartedProductElement = (product, amount) => {
@@ -555,6 +557,13 @@ const switchPage = (path, updatePath) => {
     }
 };
 
+const setupSearch = (productsCollection) => {
+    const input = document.getElementById('product-search-input');
+    input.addEventListener('keyup', e => {
+        productsCollection.sortByQuery(input.value);
+    });
+};
+
 const session = new Session();
 const productsCollection = new ProductCollection();
 const orderCollection = new OrderCollection(session);
@@ -569,13 +578,15 @@ document.addEventListener('DOMContentLoaded', async () => {
     const products = await productsCollection.get();
 
     for (const idx in products) {
-        addProduct(products[idx]);
+        const el = addProduct(products[idx]);
+        productsCollection.register(products[idx], el);
     }
 
     updateCart();
     updateOrders();
     updateNavbar();
     setupCheckout(session);
+    setupSearch(productsCollection);
 
     const url = new URL(window.location.href);
     switchPage(url.pathname);
