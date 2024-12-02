@@ -113,7 +113,7 @@ const createOrderElement = (orderGroupEl, products, order) => {
     };
 
     const theme = themes[order.status] ?? { tag: 'Ukendt status', borderColor: 'border-gray-700', bgColor: 'bg-stone-100', tagBgColor: 'bg-gray-600', icon: '' };
-    const outerClassList = `border-2 ${ theme.borderColor } ${ theme.bgColor } min-w-[500px] rounded-[6px] py-[16px] px-[24px]`;
+    const outerClassList = `order border-2 ${ theme.borderColor } ${ theme.bgColor } min-w-[500px] rounded-[6px] py-[16px] px-[24px]`;
     const innerClassList = `flex *:flex-initial *:text-sm *:text-white font-inter-medium rounded-[4px] ${ theme.tagBgColor } py-[3px] px-[8px] mb-[6px]`;
 
     const createEvent = (date, msg) => {
@@ -144,26 +144,24 @@ const createOrderElement = (orderGroupEl, products, order) => {
     ) : undefined;
 
     const orderHtml = (
-        <div class="order">
-            <div class={ outerClassList }>
-                <div class={ innerClassList }>
-                    <i class="text-[12px] content-center mr-[8px]">{ theme.icon }</i>
-                    <div class="uppercase">{ theme.tag }</div>
-                </div>
-                <div class="text-gray-800 text-[10px] mb-[4px]">ID: { order.id }</div>
-                <div class="font-inter-medium text-lg">Varer</div>
-                {
-                    products.map(prod => (
-                        <div><strong>{ prod.amount }x</strong> { prod.name }</div>
-                    ))
-                }
-                <div class="font-inter-medium text-lg mt-[16px]">Status</div>
-                { createdAtEl }
-                { paidAtEl }
-                { readyAtEl }
-                { deliveredAtEl }
-                { payNowButtonEl }
+        <div class={ outerClassList }>
+            <div class={ innerClassList }>
+                <i class="text-[12px] content-center mr-[8px]">{ theme.icon }</i>
+                <div class="uppercase">{ theme.tag }</div>
             </div>
+            <div class="text-gray-800 text-[10px] mb-[4px]">ID: { order.id }</div>
+            <div class="font-inter-medium text-lg">Varer</div>
+            {
+                products.map(prod => (
+                    <div><strong>{ prod.amount }x</strong> { prod.name }</div>
+                ))
+            }
+            <div class="font-inter-medium text-lg mt-[16px]">Status</div>
+            { createdAtEl }
+            { paidAtEl }
+            { readyAtEl }
+            { deliveredAtEl }
+            { payNowButtonEl }
         </div>
     );
 
