@@ -36,13 +36,26 @@ class ProductCollection {
         if (!this.elements)
             return;
 
+        if (query.trim().length === 0) {
+            let count = 0;
+            this.elements.forEach(product => {
+                product.el.style.visibility = 'visible';
+                product.el.style.order = count++;
+            });
+            return;
+        }
+
         const fuse = new Fuse(this.elements, { keys: ['name'] });
         const matched = fuse.search(query).map(result => result.item);
         const nonMatched = this.elements.filter(product => !matched.includes(product));
-        const result = [...matched, ...nonMatched];
+
+        nonMatched.forEach(product => {
+            product.el.style.visibility = 'collapse';
+        });
 
         let count = 0;
-        result.forEach(product => {
+        matched.forEach(product => {
+            product.el.style.visibility = 'visible';
             product.el.style.order = count++;
         });
     }
